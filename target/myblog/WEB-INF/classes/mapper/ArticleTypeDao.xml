@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.bilian.myblog.dao.ArticleTypeDao">
+
+    <resultMap id="BaseArticleType" type="tech.bilian.myblog.pojo.ArticleType">
+        <id column="article_type_id" property="articleTypeId"/>
+        <result column="article_type_name" property="articleTypeName"/>
+        <result column="article_type_desc" property="articleTypeDesc"/>
+        <result column="priority" property="priority"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="last_edit_time" property="lastEditTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="ParentType" type="tech.bilian.myblog.pojo.ArticleType" extends="BaseArticleType">
+        <association property="parent" columnPrefix="parent_" javaType="tech.bilian.myblog.pojo.ArticleType">
+            <result column="article_type_id" property="articleTypeId"/>
+            <result column="article_type_name" property="articleTypeName"/>
+            <result column="article_type_desc" property="articleTypeDesc"/>
+            <result column="priority" property="priority"/>
+            <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+            <result column="last_edit_time" property="lastEditTime" jdbcType="TIMESTAMP"/>
+
+        </association>
+    </resultMap>
+
+    <!-- 一级目录 二级目录 给定一级对应的二级目录  -->
+    <select id="queryArticleType" resultType="tech.bilian.myblog.pojo.ArticleType">
+        SELECT
+        article_type_id, article_type_name, priority, parent_id
+        FROM
+        tb_article_type
+        <where>
+            <if test="articleType == null">
+                AND parent_id is null
+            </if>
+            <if test="articleType != null and articleType.parent != null and articleType.parent.articleTypeId == null">
+                and parent_id is not null
+            </if>
+            <if test="articleType != null and articleType.parent != null and articleType.parent.articleTypeId != null">
+                and parent_id = #{articleType.parent.articleTypeId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectArticleTypeById" resultMap="BaseArticleType" parameterType="int">
+      SELECT
+        article_type_id, article_type_name, priority, article_type_desc, create_time, last_edit_time
+        FROM
+        tb_article_type
+        WHERE
+        article_type_id=#{id}
+    </select>
+
+    <!-- 获取二级类别的全部信息 -->
+    <select id="selectFullArticleTypeById" resultMap="ParentType" parameterType="int">
+        SELECT
+        ty1.article_type_id, ty1.article_type_name, ty1.priority, ty1.article_type_desc, ty1.create_time, ty1.last_edit_time,
+        ty2.article_type_id parent_article_type_id, ty2.article_type_name parent_article_type_name, ty2.priority parent_priority,
+        ty2.article_type_desc parent_article_type_desc, ty2.create_time parent_create_time, ty2.last_edit_time parent_last_edit_time
+        FROM
+        tb_article_type ty1, tb_article_type ty2
+        WHERE
+        ty1.parent_id = ty2.article_type_id
+        AND ty1.article_type_id=#{id}
+    </select>
+
+
+</mapper>

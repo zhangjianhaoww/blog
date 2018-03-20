@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tech.bilian.myblog.dao.ArticleDao">
+
+    <resultMap id="BaseArticle" type="tech.bilian.myblog.pojo.Article">
+        <id property="articleId" column="article_id"/>
+        <result property="articleName" column="article_name"/>
+        <result property="articleImage" column="article_image"/>
+        <result property="articleDesc" column="article_desc"/>
+        <result property="articleText" column="article_text"/>
+        <result property="articleCreateTime" column="article_create_time" jdbcType="TIMESTAMP"/>
+        <result property="articleLastEditTime" column="article_last_edit_time" jdbcType="TIMESTAMP"/>
+        <result property="articleLike" column="article_like"/>
+        <result property="articlePriority" column="article_priority"/>
+    </resultMap>
+    <resultMap id="FullArticle" type="tech.bilian.myblog.pojo.Article" extends="BaseArticle">
+
+    </resultMap>
+
+    <select id="queryArticleList" resultType="tech.bilian.myblog.pojo.Article" parameterType="tech.bilian.myblog.pojo.Article">
+        SELECT article_id,
+                article_name,
+                article_image,
+                article_type_id,
+                article_owner_id,
+                article_desc,
+                article_text,
+                article_create_time,
+                article_last_edit_time,
+                article_like,
+                article_priority
+        FROM tb_article
+        <where>
+            <if test="article!= null and  article.articleType != null and article.articleType.articleTypeId != null">
+                AND article_type = #{articleType.articleTypeId}
+            </if>
+            <if test="article!= null and  article.articleOwner !=null and article.articleOwner.userId != null">
+                AND article_owner_id = #{owner.userId}
+            </if>
+            <if test="article != null and article.articleId != null">
+                AND article_id = #{article.articleId}
+            </if>
+        </where>
+        ORDER BY article_id ASC
+        LIMIT #{rowIndex},#{pageSize}
+    </select>
+
+    <insert id="insertArticle" useGeneratedKeys="true" keyProperty="articleId" keyColumn="article_id" parameterType="tech.bilian.myblog.pojo.Article">
+        INSERT INTO tb_article
+        (article_name, article_image, article_type_id, article_owner_id, article_desc, article_text, article_create_time, article_last_edit_time, article_like, article_priority)
+        VALUES
+        (#{articleName}, #{articleImage}, #{articleType.articleTypeId}, #{articleOwner.userId}, #{articleDesc}, #{articleText}, #{articleCreateTime},
+          #{articleLastEditTime}, #{articleLike}, #{articlePriority})
+    </insert>
+
+
+    <update id="updateArticleImg" parameterType="tech.bilian.myblog.pojo.Article">
+        UPDATE tb_article
+        SET article_image = #{articleImage}
+        WHERE article_id = #{articleId}
+    </update>
+    
+    <select id="queryArticleCount" resultType="int">
+        SELECT COUNT(1)
+        FROM tb_article
+    </select>
+
+
+    <select id="getArticleShortInfo" resultType="tech.bilian.myblog.pojo.Article">
+        SELECT article_id,
+        article_name,
+        article_image,
+        article_type_id,
+        article_owner_id,
+        article_desc,
+        article_create_time,
+        article_priority
+        FROM tb_article
+        <where>
+            <if test="article!= null and  article.articleType != null and article.articleType.articleTypeId != null"> -- 根据类型查找文章
+                AND article_type = #{articleType.articleTypeId}
+            </if>
+            <if test="article!= null and  article.articleOwner !=null and article.articleOwner.userId != null"> -- 根据作者查找文章
+                AND article_owner_id = #{article.articleOwner.userId}
+            </if>
+            <if test="article != null and article.articleId != null">
+                AND article_id = #{article.articleId}
+            </if>
+        </where>
+        ORDER BY article_id ASC
+        LIMIT #{rowIndex},#{pageSize}
+    </select>
+
+    <select id="getArticleInitInfo" resultType="tech.bilian.myblog.pojo.Article">
+        SELECT article_id,
+        article_name,
+        article_type_id,
+        article_owner_id,
+        article_last_edit_time
+        FROM tb_article
+        <where>
+            article_owner_id = #{article.articleOwner.userId}
+            <if test="article.articleType != null and article.articleType.articleTypeId != null">
+                AND article_type_id = #{article.articleType.articleTypeId}
+            </if>
+        </where>
+         ORDER BY article_id ASC
+        LIMIT #{rowIndex},#{pageSize}
+    </select>
+
+
+    <select id="getArticleInitInfoCount" resultType="int">
+        SELECT COUNT(1)
+        FROM tb_article
+        <where>
+            article_owner_id = #{article.articleOwner.userId}
+            <if test="article.articleType != null and article.articleType.articleTypeId != null">
+                AND article_type_id = #{article.articleType.articleTypeId}
+            </if>
+        </where>
+    </select>
+
+
+
+</mapper>
