@@ -27,11 +27,17 @@
         </where>
     </select>
 
-    <!-- 通过id获取用户的详细信息 -->
-    <select id="selectUserById" parameterType="int" resultMap="BaseUserMap">
-        SELECT user_id, user_name, user_password, user_image, create_time, last_edit_time, user_desc
+    <!-- 通过id获取用户的详细信息,注入在article类的owner中 -->
+    <select id="selectUserById"  resultType="tech.bilian.myblog.pojo.User"><!-- 使用parameterType为long或int时association关联失败？？？ -->
+        SELECT user_id, user_name
         FROM tb_user
        WHERE user_id = #{id};
+    </select>
+
+    <select id="selectUserDetailsById" resultType="tech.bilian.myblog.pojo.User">
+        SELECT user_id, user_name, user_image, user_desc
+        FROM tb_user
+         WHERE user_id = #{id};
     </select>
 
 </mapper>

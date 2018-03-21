@@ -59,4 +59,7 @@ public interface ArticleDao {
 
 
     int getArticleInitInfoCount(@Param("article") Article article);
+
+
+    List<Article> queryArticleList1 (@Param("article") Article article , @Param("rowIndex")int rowIndex, @Param("pageSize")int pageSize);
 }

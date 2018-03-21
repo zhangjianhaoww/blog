@@ -5,10 +5,22 @@
 <mapper namespace="tech.bilian.myblog.dao.ArticleDao">
 
     <resultMap id="BaseArticle" type="tech.bilian.myblog.pojo.Article">
-
+        <id property="articleId" column="article_id"/>
+        <result property="articleName" column="article_name"/>
+        <result property="articleImage" column="article_image"/>
+        <result property="articleDesc" column="article_desc"/>
+        <result property="articleText" column="article_text"/>
+        <result property="articleCreateTime" column="article_create_time" jdbcType="TIMESTAMP"/>
+        <result property="articleLastEditTime" column="article_last_edit_time" jdbcType="TIMESTAMP"/>
+        <result property="articleLike" column="article_like"/>
+        <result property="articlePriority" column="article_priority"/>
+    </resultMap>
+    <resultMap id="FullArticle" type="tech.bilian.myblog.pojo.Article" extends="BaseArticle">
+        <association property="articleType" column="{id = article_type_id}" select="tech.bilian.myblog.dao.ArticleTypeDao.selectFullArticleTypeById" fetchType="eager"/>
+        <association property="articleOwner" column="{id = article_owner_id}" select="tech.bilian.myblog.dao.UserDao.selectUserById" fetchType="eager"/>
     </resultMap>
 
-    <select id="queryArticleList" resultType="tech.bilian.myblog.pojo.Article" parameterType="tech.bilian.myblog.pojo.Article">
+    <select id="queryArticleList" resultMap="FullArticle" parameterType="tech.bilian.myblog.pojo.Article">
         SELECT article_id,
                 article_name,
                 article_image,
@@ -111,6 +123,35 @@
         </where>
     </select>
 
+
+
+    <select id="queryArticleList1" resultMap="FullArticle" parameterType="tech.bilian.myblog.pojo.Article">
+        SELECT article_id,
+        article_name,
+        article_image,
+        article_type_id,
+        article_owner_id,
+        article_desc,
+        article_text,
+        article_create_time,
+        article_last_edit_time,
+        article_like,
+        article_priority
+        FROM tb_article
+        <where>
+            <if test="article!= null and  article.articleType != null and article.articleType.articleTypeId != null">
+                AND article_type = #{articleType.articleTypeId}
+            </if>
+            <if test="article!= null and  article.articleOwner !=null and article.articleOwner.userId != null">
+                AND article_owner_id = #{owner.userId}
+            </if>
+            <if test="article != null and article.articleId != null">
+                AND article_id = #{article.articleId}
+            </if>
+        </where>
+        ORDER BY article_id ASC
+        LIMIT #{rowIndex},#{pageSize}
+    </select>
 
 
 </mapper>

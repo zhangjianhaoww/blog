@@ -36,4 +36,14 @@ public class ArticleDaoTest extends BaseTest {
             System.out.println(article1.getArticleId());
         }
     }
+
+    @Test
+    public void queryArticleList1Test(){
+        Article article = new Article();
+        article.setArticleId(5L);
+        List<Article> articles = articleDao.queryArticleList1(article, 0, 10);
+        assertEquals(1, articles.size());
+        System.out.println(articles.get(0).getArticleType().getParent().getArticleTypeName());
+
+    }
 }

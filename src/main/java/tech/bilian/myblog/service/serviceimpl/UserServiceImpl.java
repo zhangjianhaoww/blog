@@ -28,4 +28,19 @@ public class UserServiceImpl implements UserService{
         }
         return new UserExecution(1, "查询成功", result);
     }
+
+    /**
+     * 根据用户id查找用户详细信息
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public UserExecution selectUserDetailsById(long id) {
+        User result = userDao.selectUserDetailsById(id);
+        if(result == null){
+            return new UserExecution(0, "用户不存在");
+        }
+        return new UserExecution(1, "查询成功", result);
+    }
 }

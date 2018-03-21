@@ -7,20 +7,21 @@
     <resultMap id="BaseArticleType" type="tech.bilian.myblog.pojo.ArticleType">
         <id column="article_type_id" property="articleTypeId"/>
         <result column="article_type_name" property="articleTypeName"/>
-        <result column="article_type_desc" property="articleTypeDesc"/>
+        <!--result column="article_type_desc" property="articleTypeDesc"/>
         <result column="priority" property="priority"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-        <result column="last_edit_time" property="lastEditTime" jdbcType="TIMESTAMP"/>
+        <result column="last_edit_time" property="lastEditTime" jdbcType="TIMESTAMP"/-->
     </resultMap>
 
     <resultMap id="ParentType" type="tech.bilian.myblog.pojo.ArticleType" extends="BaseArticleType">
         <association property="parent" columnPrefix="parent_" javaType="tech.bilian.myblog.pojo.ArticleType">
             <result column="article_type_id" property="articleTypeId"/>
             <result column="article_type_name" property="articleTypeName"/>
-            <result column="article_type_desc" property="articleTypeDesc"/>
+
+            <!-- result column="article_type_desc" property="articleTypeDesc"/>
             <result column="priority" property="priority"/>
             <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-            <result column="last_edit_time" property="lastEditTime" jdbcType="TIMESTAMP"/>
+            <result column="last_edit_time" property="lastEditTime" jdbcType="TIMESTAMP"/-->
 
         </association>
     </resultMap>
@@ -54,11 +55,10 @@
     </select>
 
     <!-- 获取二级类别的全部信息 -->
-    <select id="selectFullArticleTypeById" resultMap="ParentType" parameterType="int">
+    <select id="selectFullArticleTypeById" resultMap="ParentType">
         SELECT
-        ty1.article_type_id, ty1.article_type_name, ty1.priority, ty1.article_type_desc, ty1.create_time, ty1.last_edit_time,
-        ty2.article_type_id parent_article_type_id, ty2.article_type_name parent_article_type_name, ty2.priority parent_priority,
-        ty2.article_type_desc parent_article_type_desc, ty2.create_time parent_create_time, ty2.last_edit_time parent_last_edit_time
+        ty1.article_type_id, ty1.article_type_name,
+        ty2.article_type_id parent_article_type_id, ty2.article_type_name parent_article_type_name
         FROM
         tb_article_type ty1, tb_article_type ty2
         WHERE

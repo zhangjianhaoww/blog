@@ -7,5 +7,7 @@ public interface UserDao {
 
     User queryUser(@Param("user") User user);
 
-    User selectUserById(int id);
+    User selectUserById(long id);
+
+    User selectUserDetailsById(long id);
 }
