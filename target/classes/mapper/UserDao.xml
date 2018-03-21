@@ -34,4 +34,10 @@
        WHERE user_id = #{id};
     </select>
 
+    <select id="selectUserDetailsById" resultType="tech.bilian.myblog.pojo.User">
+        SELECT user_id, user_name, user_image, user_desc
+        FROM tb_user
+         WHERE user_id = #{id};
+    </select>
+
 </mapper>

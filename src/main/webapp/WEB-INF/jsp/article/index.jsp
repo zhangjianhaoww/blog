@@ -46,16 +46,13 @@
 
     <div class="am-collapse am-topbar-collapse" id="blog-collapse">
         <ul class="am-nav am-nav-pills am-topbar-nav">
-            <li class="am-active"><a href="lw-index.html">首页</a></li>
+            <li class="am-active"><a href="/article/index">首页</a></li>
             <li class="am-dropdown" data-am-dropdown>
                 <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
-                    首页布局 <span class="am-icon-caret-down"></span>
+                    文章分类 <span class="am-icon-caret-down"></span>
                 </a>
-                <ul class="am-dropdown-content">
-                    <li><a href="lw-index.html">1. blog-index-standard</a></li>
-                    <li><a href="lw-index-nosidebar.html">2. blog-index-nosidebar</a></li>
-                    <li><a href="lw-index-center.html">3. blog-index-layout</a></li>
-                    <li><a href="lw-index-noslider.html">4. blog-index-noslider</a></li>
+                <ul class="am-dropdown-content" id="articleParentType">
+
                 </ul>
             </li>
             <li><a href="lw-article.html">标准文章</a></li>
@@ -161,11 +158,7 @@
     <div class="am-u-md-4 am-u-sm-12 blog-sidebar">
         <div class="blog-sidebar-widget blog-bor">
             <h2 class="blog-text-center blog-title"><span>About ME</span></h2>
-            <img src="../../../resources/blog/assets/i/f14.jpg" alt="about me" class="blog-entry-img" >
-            <p>妹纸</p>
-            <p>
-                我是妹子UI，中国首个开源 HTML5 跨屏前端框架
-            </p><p>我不想成为一个庸俗的人。十年百年后，当我们死去，质疑我们的人同样死去，后人看到的是裹足不前、原地打转的你，还是一直奔跑、走到远方的我？</p>
+            <div id="userDetails"></div>
         </div>
         <!--div class="blog-sidebar-widget blog-bor">
             <h2 class="blog-text-center blog-title"><span>Contact ME</span></h2>
@@ -258,16 +251,18 @@
 <script src="../../../resources/md/js/md.js"></script>
 <script src="../../../resources/md/js/tomd.js"></script>
 <script src="../../../resources/md/js/am-md.js"></script>
+<script src="../../../resources/js/common/commons.js"></script>
 
 <!-- index.js -->
 <script>
     $(function () {
         var pageCount = 1;
         var articleCount = 0;
+        var parentTypeId = getQueryString("parentTypeId");
+        alert(parentTypeId);
         getArticleList();
 
         function getArticleList() {
-            alert(pageCount);
             $.ajax({
                 url:"/article/articleindexinfo?pageCount=" + pageCount,
                 type:"get",
@@ -276,6 +271,8 @@
                     if(data.success) {
                         articleCount = data.articleCount;
                         handleList(data.articleList);
+                        handleUser(data.user);
+                        hadleArticleParentType(data.firstType);
                     }
                 }
 
@@ -335,6 +332,24 @@
                 pageCount += 1;
                 getArticleList();
             }
+        }
+
+        function handleUser(data) {
+            var userHtml = '';
+            userHtml +='<img src="' + data.userImage +'" alt="about me" class="blog-entry-img" >'
+                +'<p>' + data.userName + '</p>'
+                +'<p>' + data.userDesc + '</p>';
+            $("#userDetails").html(userHtml);
+        }
+
+        function hadleArticleParentType(data) {
+
+            var parentTypeHtml = '';
+            data.map(function (item, index) {
+                parentTypeHtml += '<li><a href="/article/index?parentTypeId=' + item.articleTypeId +'">' + item.articleTypeName + '</a></li> '
+
+            });
+            $("#articleParentType").html(parentTypeHtml);
         }
     })
 </script>

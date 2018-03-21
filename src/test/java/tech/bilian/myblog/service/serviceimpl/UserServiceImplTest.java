@@ -24,4 +24,10 @@ public class UserServiceImplTest extends BaseTest{
 
 
     }
+
+    @Test
+    public void selectUserDetailsByIdTest(){
+        UserExecution execution = userService.selectUserDetailsById(1);
+        System.out.println(execution.getUser().getUserName());
+    }
 }

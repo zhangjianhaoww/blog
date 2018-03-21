@@ -5,8 +5,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import tech.bilian.myblog.dto.ArticleExecution;
+import tech.bilian.myblog.dto.ArticleTypeExecution;
+import tech.bilian.myblog.dto.UserExecution;
 import tech.bilian.myblog.pojo.Article;
 import tech.bilian.myblog.service.ArticleService;
+import tech.bilian.myblog.service.ArticleTypeService;
+import tech.bilian.myblog.service.UserService;
 import tech.bilian.myblog.utils.HttpServletRequestUtil;
 
 import javax.annotation.Resource;
@@ -19,6 +23,10 @@ import java.util.Map;
 public class ArticleController {
     @Resource
     ArticleService articleService;
+    @Resource
+    UserService userService;
+    @Resource
+    ArticleTypeService articleTypeService;
 
     @RequestMapping(value = "articleindexinfo", method = RequestMethod.GET)
     @ResponseBody
@@ -46,9 +54,24 @@ public class ArticleController {
             modelMap.put("errMsg", articleList.getStateInfo());
             return modelMap;
         }
+        UserExecution userExecution = userService.selectUserDetailsById(1l);
+        if(userExecution.getState()<1){
+            modelMap.put("success", false);
+            modelMap.put("errMsg", userExecution.getStateInfo());
+            return modelMap;
+        }
+
+        ArticleTypeExecution articleTypeExecution = articleTypeService.queryArticleType(null);
+        if(articleTypeExecution.getState()<1){
+            modelMap.put("success", false);
+            modelMap.put("errMsg", articleTypeExecution.getStateInfo());
+            return modelMap;
+        }
+        modelMap.put("firstType", articleTypeExecution.getArticleTypeList());
         modelMap.put("articleCount", articleCount);
         modelMap.put("success", true);
         modelMap.put("articleList", articleList.getArticleList());
+        modelMap.put("user", userExecution.getUser());
 
         System.out.println("dlfkjsl;fjsflaskjfasldfjdasklfd");
         return modelMap;
