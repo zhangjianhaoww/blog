@@ -232,10 +232,7 @@
     <div class="blog-text-center">© 2015 AllMobilize, Inc. Licensed under MIT license. Made with love By LWXYFER</div>
 </footer>
 
-<div data-provide="am-md-editable">
-    <h3>amazeui 啦啦啦啦阿拉啦</h3>
-    <p>通过 "data-provide = am-md-editable" 调用MD编辑器</p>
-</div>
+
 
 
 

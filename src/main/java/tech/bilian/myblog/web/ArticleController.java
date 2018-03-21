@@ -8,6 +8,7 @@ import tech.bilian.myblog.dto.ArticleExecution;
 import tech.bilian.myblog.dto.ArticleTypeExecution;
 import tech.bilian.myblog.dto.UserExecution;
 import tech.bilian.myblog.pojo.Article;
+import tech.bilian.myblog.pojo.ArticleType;
 import tech.bilian.myblog.service.ArticleService;
 import tech.bilian.myblog.service.ArticleTypeService;
 import tech.bilian.myblog.service.UserService;
@@ -61,13 +62,26 @@ public class ArticleController {
             return modelMap;
         }
 
-        ArticleTypeExecution articleTypeExecution = articleTypeService.queryArticleType(null);
+        //查找一级目录
+        ArticleTypeExecution articleParentTypeExecution = articleTypeService.queryArticleType(null);
+        if(articleParentTypeExecution.getState()<1){
+            modelMap.put("success", false);
+            modelMap.put("errMsg", articleParentTypeExecution.getStateInfo());
+            return modelMap;
+        }
+
+        //查找二级目录
+        ArticleType articleType = new ArticleType();
+        articleType.setParent(new ArticleType());
+        ArticleTypeExecution articleTypeExecution = articleTypeService.queryArticleType(articleType);
         if(articleTypeExecution.getState()<1){
             modelMap.put("success", false);
             modelMap.put("errMsg", articleTypeExecution.getStateInfo());
             return modelMap;
         }
-        modelMap.put("firstType", articleTypeExecution.getArticleTypeList());
+
+        modelMap.put("secondType", articleTypeExecution.getArticleTypeList());
+        modelMap.put("firstType", articleParentTypeExecution.getArticleTypeList());
         modelMap.put("articleCount", articleCount);
         modelMap.put("success", true);
         modelMap.put("articleList", articleList.getArticleList());
@@ -120,5 +134,10 @@ public class ArticleController {
         modelMap.put("article", articleExecution.getArticleList().get(0));
         //modelMap.put("articleSize", articleSize);
         return modelMap;
+    }
+
+    @RequestMapping(value = "/img", method = RequestMethod.GET)
+    public String img(){
+        return "/article/img";
     }
 }
