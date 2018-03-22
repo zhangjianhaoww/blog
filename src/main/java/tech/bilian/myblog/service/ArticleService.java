@@ -17,7 +17,7 @@ public interface ArticleService {
      * @param article
      * @return
      */
-    ArticleExecution insertArticle(Article article, File imageFile, Long userId);
+    ArticleExecution insertArticle(Article article, Image image, Long userId);
 
 
     ArticleExecution queryArticleList(Article article, int rowIndex, int pageSize);

@@ -88,7 +88,7 @@ public class ArticleServiceImpl implements ArticleService{
      */
     @Override
     @Transactional
-    public ArticleExecution insertArticle(Article article, File imageFile, Long userId) {
+    public ArticleExecution insertArticle(Article article, Image image, Long userId) {
         if(article == null){
             return new ArticleExecution(-1, "article 不能为空！！！！");
         }
@@ -109,9 +109,9 @@ public class ArticleServiceImpl implements ArticleService{
             if(effectNum <= 0){
                 throw new RuntimeException("文章传入数据库失败！！！");
             }else{
-                if (imageFile != null){
+                if (image != null){
                     try {
-                        addArticleImg(article, imageFile);
+                        addArticleImg(article, image);
                     }catch (Exception e){
                         throw new RuntimeException("文章图片插入失败！！！" + e.getMessage());
                     }
@@ -152,9 +152,9 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
 
-    private void addArticleImg(Article article, File imageFile)  throws Exception{
+    private void addArticleImg(Article article, Image image)  throws Exception{
         String dest = PathUtil.getShopImagePath(article.getArticleOwner().getUserId(), article.getArticleId());
-        String articleImgAddr = ImageUtil.generateThumbnail(imageFile, dest);
+        String articleImgAddr = ImageUtil.generateThumbnail(image, dest);
         article.setArticleImage(articleImgAddr);
     }
 }

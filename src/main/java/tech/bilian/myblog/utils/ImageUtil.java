@@ -44,12 +44,12 @@ public class ImageUtil {
      * @param targetAddr
      * @return
      */
-    public static String generateThumbnail (File imageFile, String targetAddr) throws Exception{
+    public static String generateThumbnail (Image image, String targetAddr) throws Exception{
 
         //有系统给上传图片命名，避免图片名重复
         String realFileName = getRandomFileName();
         //获取图片格式名
-        String extension = getFileExtension(imageFile.getName());
+        String extension = getFileExtension(image.getName());
 
         makeDirPath(targetAddr);
 
@@ -58,7 +58,7 @@ public class ImageUtil {
         File dest = new File(PathUtil.getImageBasePath() + relativeAddr);
         logger.debug("完整路径： " + dest);
         try{
-            Thumbnails.of(imageFile).size(200, 200).outputQuality(0.8).toFile(dest);
+            Thumbnails.of(image.getImageInputStream()).size(200, 200).outputQuality(0.8).toFile(dest);
 
         }catch (IOException e){
 

@@ -10,6 +10,9 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import tech.bilian.myblog.dao.UserDao;
 import tech.bilian.myblog.dto.ArticleExecution;
 import tech.bilian.myblog.dto.ArticleTypeExecution;
@@ -69,132 +72,191 @@ public class AdminController {
 
     @RequestMapping(value = "articleinsert", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> articleInsert(HttpServletRequest request){
+    public Map<String, Object> articleInsert(HttpServletRequest request) {
         System.out.println("zhangjiahao");
 
         Map<String, Object> modelMap = new HashMap<>();
-        String savePath="/home/haru/imagestest/save";
-        boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-        if(isMultipart==true){
-            InputStream in = null;
-            FileOutputStream out = null;
-
-            ObjectMapper mapper = new ObjectMapper();
-            Article article = null;
-            Image image = null;
-            File imageFile = null;
-            String articleString = null;
-            String verifyCodeActual = null;
-
-
-
-            try{
-                FileItemFactory factory = new DiskFileItemFactory();
-                ServletFileUpload upload = new ServletFileUpload(factory);
-
-                String encoding = request.getCharacterEncoding();
-
-                System.out.println(encoding);
-
-
-                upload.setHeaderEncoding(encoding);
-
-                List<FileItem> items = upload.parseRequest(request);//得到所有的文件
-                Iterator<FileItem> itr = items.iterator();
-                while(itr.hasNext()) {//依次处理每个文件
-
-                    FileItem item = (FileItem) itr.next();
-                    if (item.isFormField()) {
-                        // 普通表单域
-                        String name = item.getFieldName();
-                        String value = item.getString(encoding);
-
-                        if (name.equals("article"))
-                            articleString = value;
-                        else
-                            verifyCodeActual = value;
-                        //获得article对象
-
-
-                        System.out.println("name:" + name + "value" + value);
-                    } else {
-                        String fileName = item.getName();
-                        if (fileName == null || fileName.trim().equals("")) {
-                            continue;
-                        }
-                        fileName = fileName.substring(fileName.lastIndexOf("/") + 1);
-                        in = item.getInputStream();
-
-
-                        out = new FileOutputStream(savePath + "/" + fileName);
-                        byte[] buffer = new byte[1024 * 1024];
-                        int len = 0;
-                        while ((len = in.read(buffer)) != -1) {
-                            out.write(buffer, 0, len);
-                        }
-                        imageFile = new File(savePath + "/" + fileName);
-                        // InputStream is = new FileInputStream(imageFile);
-                        // image = new Image(fileName, is);
-                        // 关闭流
-                        if (out != null) {
-                            out.close();
-                        }
-                        if (in != null) {
-                            in.close();
-                        }
-                    }
-                }
-                String verifyCodeExpected = (String)request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
-                //判断验证码
-                if(!CodeUtil.ckechVerifyCode(request, verifyCodeActual)){
-                    modelMap.put("success", false);
-                    modelMap.put("errMsg", "验证码输入错误！！！");
-                    return modelMap;
-                }
-
-                try {
-                    article = mapper.readValue(articleString, Article.class);
-                }catch (Exception e){
-                    modelMap.put("success", false);
-                    modelMap.put("errMsg", e.getMessage());
-                    return modelMap;
-                }
-
-
-//                    String fileName=item.getName();//获得文件名，包括路径
-//                    if(fileName!=null){
-//                        File fullFile=new File(item.getName());
-//                        File savedFile=new File(uploadPath,fullFile.getName());
-//                        item.write(savedFile);
-//                    }
-                // }
-                System.out.print("upload succeed");
-                try {
-                    Long userId = Long.valueOf(request.getSession().getAttribute("userId").toString());
-                    System.out.println("userId: " + userId);
-                    ArticleExecution articleExecution = articleService.insertArticle(article, imageFile, userId);
-                    modelMap.put("success", true);
-                    modelMap.put("successMsg", articleExecution.getStateInfo());
-                    return modelMap;
-                }catch (Exception e){
-                    modelMap.put("success", false);
-                    modelMap.put("errMsg", e.getMessage());
-                    return modelMap;
-                }
-
-
-            }
-            catch(Exception e){
-                modelMap.put("success", false);
-                modelMap.put("errMsg", e.getMessage());
-                return modelMap;
-            }
-
-        }else {
+        if(request.getSession().getAttribute("userId") == null){
             modelMap.put("success", false);
-            modelMap.put("errMsg","文章上传错误！！！！");
+            modelMap.put("errMsg", "请先登录");
             return modelMap;
         }
+        String verifyCodeActual = request.getParameter("verifyCodeActual");
+        if(!CodeUtil.ckechVerifyCode(request, verifyCodeActual)){
+            modelMap.put("success", false);
+            modelMap.put("errMsg", "验证码输入错误！！！");
+            return modelMap;
+        }
+        String articleString = HttpServletRequestUtil.getString(request, "article");
+        Article article = null;
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            article = mapper.readValue(articleString, Article.class);
+            }catch (Exception e){
+            modelMap.put("success", false);
+            modelMap.put("errMsg", e.getMessage());
+            return modelMap;
+        }
+        CommonsMultipartFile articleImage = null;
+        CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(
+                request.getSession().getServletContext());
+        if (commonsMultipartResolver.isMultipart(request)) {
+            MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
+            articleImage = (CommonsMultipartFile) multipartHttpServletRequest.getFile("articleImg");
+        }else{
+            modelMap.put("success", false);
+            modelMap.put("errMsg", "上传图片不能为空");
+            return modelMap;
+        }
+        if(article == null || articleImage == null){
+            modelMap.put("success", false);
+            modelMap.put("errMsg", "请输入完整信息");
+            return modelMap;
+        }
+        try{
+            Image image = new Image(articleImage.getOriginalFilename(), articleImage.getInputStream());
+            Long userId = Long.valueOf(request.getSession().getAttribute("userId").toString());
+
+            ArticleExecution articleExecution = articleService.insertArticle(article, image, userId);
+            if(articleExecution.getState() == 1){
+                modelMap.put("success", true);
+                modelMap.put("successMsg", "添加成功");
+                return modelMap;
+            }
+            else {
+                modelMap.put("success", false);
+                modelMap.put("errMsg", "添加失败");
+                return modelMap;
+            }
+        }catch (IOException e){
+            modelMap.put("success", false);
+            modelMap.put("errMsg", e.getMessage());
+            return modelMap;
+        }
+
+
+       // String savePath="/home/haru/imagestest/save";
+//        boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+//        if(isMultipart==true){
+//            InputStream in = null;
+//            FileOutputStream out = null;
+//
+//            ObjectMapper mapper = new ObjectMapper();
+//            Article article = null;
+//            Image image = null;
+//            File imageFile = null;
+//            String articleString = null;
+//            String verifyCodeActual = null;
+//
+//
+//
+//            try{
+//                FileItemFactory factory = new DiskFileItemFactory();
+//                ServletFileUpload upload = new ServletFileUpload(factory);
+//
+//                String encoding = request.getCharacterEncoding();
+//
+//                System.out.println(encoding);
+//
+//
+//                upload.setHeaderEncoding(encoding);
+//
+//                List<FileItem> items = upload.parseRequest(request);//得到所有的文件
+//                Iterator<FileItem> itr = items.iterator();
+//                while(itr.hasNext()) {//依次处理每个文件
+//
+//                    FileItem item = (FileItem) itr.next();
+//                    if (item.isFormField()) {
+//                        // 普通表单域
+//                        String name = item.getFieldName();
+//                        String value = item.getString(encoding);
+//
+//                        if (name.equals("article"))
+//                            articleString = value;
+//                        else
+//                            verifyCodeActual = value;
+//                        //获得article对象
+//
+//
+//                        System.out.println("name:" + name + "value" + value);
+//                    } else {
+//                        String fileName = item.getName();
+//                        if (fileName == null || fileName.trim().equals("")) {
+//                            continue;
+//                        }
+//                        fileName = fileName.substring(fileName.lastIndexOf("/") + 1);
+//                        in = item.getInputStream();
+//
+//
+//                        out = new FileOutputStream(savePath + "/" + fileName);
+//                        byte[] buffer = new byte[1024 * 1024];
+//                        int len = 0;
+//                        while ((len = in.read(buffer)) != -1) {
+//                            out.write(buffer, 0, len);
+//                        }
+//                        imageFile = new File(savePath + "/" + fileName);
+//                        // InputStream is = new FileInputStream(imageFile);
+//                        // image = new Image(fileName, is);
+//                        // 关闭流
+//                        if (out != null) {
+//                            out.close();
+//                        }
+//                        if (in != null) {
+//                            in.close();
+//                        }
+//                    }
+//                }
+//                String verifyCodeExpected = (String)request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
+//                //判断验证码
+//                if(!CodeUtil.ckechVerifyCode(request, verifyCodeActual)){
+//                    modelMap.put("success", false);
+//                    modelMap.put("errMsg", "验证码输入错误！！！");
+//                    return modelMap;
+//                }
+//
+//                try {
+//                    article = mapper.readValue(articleString, Article.class);
+//                }catch (Exception e){
+//                    modelMap.put("success", false);
+//                    modelMap.put("errMsg", e.getMessage());
+//                    return modelMap;
+//                }
+//
+//
+////                    String fileName=item.getName();//获得文件名，包括路径
+////                    if(fileName!=null){
+////                        File fullFile=new File(item.getName());
+////                        File savedFile=new File(uploadPath,fullFile.getName());
+////                        item.write(savedFile);
+////                    }
+//                // }
+//                System.out.print("upload succeed");
+//                try {
+//                    Long userId = Long.valueOf(request.getSession().getAttribute("userId").toString());
+//                    System.out.println("userId: " + userId);
+//                    ArticleExecution articleExecution = articleService.insertArticle(article, imageFile, userId);
+//                    modelMap.put("success", true);
+//                    modelMap.put("successMsg", articleExecution.getStateInfo());
+//                    return modelMap;
+//                }catch (Exception e){
+//                    modelMap.put("success", false);
+//                    modelMap.put("errMsg", e.getMessage());
+//                    return modelMap;
+//                }
+//
+//
+//            }
+//            catch(Exception e){
+//                modelMap.put("success", false);
+//                modelMap.put("errMsg", e.getMessage());
+//                return modelMap;
+//            }
+//
+//        }else {
+//            modelMap.put("success", false);
+//            modelMap.put("errMsg","文章上传错误！！！！");
+//            return modelMap;
+//        }
 
 //        byte[] bytes = new byte[1024 * 1024];
 //        InputStream is;
@@ -340,6 +402,18 @@ public class AdminController {
         modelMap.put("success", true);
 
 
+        return modelMap;
+    }
+
+
+    @RequestMapping(value = "articleinserttest", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> articleInsertTest(HttpServletRequest request) {
+        Map<String, Object> modelMap = new HashMap<>();
+        String verifyCodeActual = request.getParameter("verifyCodeActual");
+
+        modelMap.put("success", false);
+        modelMap.put("msg", verifyCodeActual);
         return modelMap;
     }
 
