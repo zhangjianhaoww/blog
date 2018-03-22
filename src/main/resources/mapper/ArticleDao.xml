@@ -20,6 +20,8 @@
         <association property="articleOwner" column="{id = article_owner_id}" select="tech.bilian.myblog.dao.UserDao.selectUserById" fetchType="eager"/>
     </resultMap>
 
+
+
     <select id="queryArticleList" resultMap="FullArticle" parameterType="tech.bilian.myblog.pojo.Article">
         SELECT article_id,
                 article_name,
@@ -35,10 +37,10 @@
         FROM tb_article
         <where>
             <if test="article!= null and  article.articleType != null and article.articleType.articleTypeId != null">
-                AND article_type = #{articleType.articleTypeId}
+                AND article_type_id = #{article.articleType.articleTypeId}
             </if>
             <if test="article!= null and  article.articleOwner !=null and article.articleOwner.userId != null">
-                AND article_owner_id = #{owner.userId}
+                AND article_owner_id = #{article.articleOwner.userId}
             </if>
             <if test="article != null and article.articleId != null">
                 AND article_id = #{article.articleId}
@@ -62,11 +64,36 @@
         SET article_image = #{articleImage}
         WHERE article_id = #{articleId}
     </update>
-    
+
+    <!-- 查询符合特定条件时的文章数量便于分页 -->
     <select id="queryArticleCount" resultType="int">
         SELECT COUNT(1)
         FROM tb_article
+        <where>
+            <!--  给定二级类别查询文章数量 -->
+            <if test="article != null and article.articleType != null and article.articleType.articleTypeId != null">
+                AND article_type_id = #{article.articleType.articleTypeId}
+            </if>
+            <!-- 给定作者id查询文章 -->
+
+        </where>
     </select>
+
+    <!-- 查询特定一级类别时的文章数量便于分页 -->
+    <select id="queryArticleCountByParentId" resultType="int">
+        SELECT COUNT(1)
+        FROM tb_article ta, tb_article_type ty
+        <where>
+            AND ta.article_type_id = ty.article_type_id
+            <if test="article == null or article.articleType == null or article.articleType.parent == null or article.articleType.parent.articleTypeId == null">
+                AND tb.article_id = -1
+            </if>
+            <if test="article != null and article.articleType != null and article.articleType.parent != null and article.articleType.parent.articleTypeId != null">
+                AND ty.parent_id = #{article.articleType.parent.articleTypeId}
+            </if>
+        </where>
+    </select>
+
 
 
     <select id="getArticleShortInfo" resultType="tech.bilian.myblog.pojo.Article">
@@ -80,10 +107,10 @@
         article_priority
         FROM tb_article
         <where>
-            <if test="article!= null and  article.articleType != null and article.articleType.articleTypeId != null"> -- 根据类型查找文章
+            <if test="article!= null and  article.articleType != null and article.articleType.articleTypeId != null">
                 AND article_type = #{articleType.articleTypeId}
             </if>
-            <if test="article!= null and  article.articleOwner !=null and article.articleOwner.userId != null"> -- 根据作者查找文章
+            <if test="article!= null and  article.articleOwner !=null and article.articleOwner.userId != null">
                 AND article_owner_id = #{article.articleOwner.userId}
             </if>
             <if test="article != null and article.articleId != null">
@@ -94,7 +121,7 @@
         LIMIT #{rowIndex},#{pageSize}
     </select>
 
-    <select id="getArticleInitInfo" resultType="tech.bilian.myblog.pojo.Article">
+    <select id="getArticleInitInfo" resultMap="FullArticle">
         SELECT article_id,
         article_name,
         article_type_id,
@@ -153,5 +180,28 @@
         LIMIT #{rowIndex},#{pageSize}
     </select>
 
+    <!-- 前端index页面：通过一级类别查询文章  -->
+    <select id="selectArticleByParentTypeId" resultMap="FullArticle">
+        SELECT ta.article_id,
+        ta.article_name,
+        ta.article_image,
+        ta.article_type_id,
+        ta.article_owner_id,
+        ta.article_desc,
+        ta.article_create_time,
+        ta.article_priority
+        FROM tb_article ta, tb_article_type ty
+        <where>
+            AND ta.article_type_id = ty.article_type_id
+            <if test="article == null or article.articleType == null or article.articleType.parent == null or article.articleType.parent.articleTypeId == null">
+                AND tb.article_id = -1
+            </if>
+            <if test="article != null and article.articleType != null and article.articleType.parent != null and article.articleType.parent.articleTypeId != null">
+                AND ty.parent_id = #{article.articleType.parent.articleTypeId}
+            </if>
+        </where>
+        ORDER BY ta.article_priority DESC
+        LIMIT #{rowIndex},#{pageSize}
+    </select>
 
 </mapper>

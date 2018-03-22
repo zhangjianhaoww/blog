@@ -2,6 +2,7 @@ package tech.bilian.myblog.service.serviceimpl;
 
 import tech.bilian.myblog.dao.ArticleDao;
 import tech.bilian.myblog.dto.ArticleExecution;
+import tech.bilian.myblog.dto.ParentTypeExecution;
 import tech.bilian.myblog.pojo.Article;
 import tech.bilian.myblog.pojo.ArticleType;
 import tech.bilian.myblog.pojo.User;
@@ -40,6 +41,43 @@ public class ArticleServiceImpl implements ArticleService{
     @Override
     public int getArticleInitInfoCount(Article article) {
         return articleDao.getArticleInitInfoCount(article);
+    }
+
+    /**
+     * 前端index页面：通过一级目录查询文章基本信息
+     *
+     * @param article
+     * @param rowIndex
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public ParentTypeExecution getArticleIndexInfoByParentType(Article article, int rowIndex, int pageSize) {
+        if(article == null || article.getArticleType() == null || article.getArticleType().getParent() == null
+                || article.getArticleType().getParent().getArticleTypeId() == null){
+            return new ParentTypeExecution(-1, "文章类别的父类别的id不能为空");
+        }
+        if(rowIndex < 0 || pageSize < 0){
+            return new ParentTypeExecution(-2, "rowIndex或pageSize输入错误");
+        }
+        //查询符合条件文章数量
+        int articleCount = articleDao.queryArticleCountByParentId(article);
+        if (articleCount < 0){
+            return new ParentTypeExecution(-4, "文章数量查询失败");
+        }
+
+        if(rowIndex > articleCount){
+            return new ParentTypeExecution(-5, "rowIndex大于实际数量");
+        }
+
+        //查询符合条件文章
+        List<Article> articleList = articleDao.selectArticleByParentTypeId(article, rowIndex, pageSize);
+        if (articleList == null || articleList.size()<0){
+            return new ParentTypeExecution(-3, "数据库查询失败");
+        }
+
+        //最后返回成功信息
+        return new ParentTypeExecution(articleCount, articleList.size(), 1, "查询成功", articleList);
     }
 
     /**

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import tech.bilian.myblog.dto.ArticleExecution;
 import tech.bilian.myblog.dto.ArticleTypeExecution;
+import tech.bilian.myblog.dto.ParentTypeExecution;
 import tech.bilian.myblog.dto.UserExecution;
 import tech.bilian.myblog.pojo.Article;
 import tech.bilian.myblog.pojo.ArticleType;
@@ -47,14 +48,13 @@ public class ArticleController {
 //        modelMap.put("pageCount", aaa);
 
         int pageCount = HttpServletRequestUtil.getInt(request,"pageCount");
-        System.out.println(pageCount);
-        int rowIndex = 10 * (pageCount - 1);
-        ArticleExecution articleList = articleService.queryArticleList(new Article(), rowIndex, 10);
-        if(articleList.getState() != 1){
-            modelMap.put("success", false);
-            modelMap.put("errMsg", articleList.getStateInfo());
-            return modelMap;
+        int parentTypeId = HttpServletRequestUtil.getInt(request, "parentTypeId");
+        int typeId = HttpServletRequestUtil.getInt(request, "typeId");
+        if(pageCount < 1){
+            pageCount = 1;
         }
+
+        //查找用户基本信息
         UserExecution userExecution = userService.selectUserDetailsById(1l);
         if(userExecution.getState()<1){
             modelMap.put("success", false);
@@ -79,6 +79,47 @@ public class ArticleController {
             modelMap.put("errMsg", articleTypeExecution.getStateInfo());
             return modelMap;
         }
+
+        //根据一级目录查询(需要两个表 情况特殊)
+        if(typeId <= 0 && parentTypeId >0){
+            int rowIndex = 10 * (pageCount - 1);
+            Article article1 = new Article();
+            ArticleType articleType1 = new ArticleType();
+            ArticleType parentType = new ArticleType();
+            parentType.setArticleTypeId(parentTypeId);
+            articleType1.setParent(parentType);
+            article1.setArticleType(articleType1);
+            ParentTypeExecution parentTypeExecution = articleService.getArticleIndexInfoByParentType(article1, rowIndex, 10);
+            if(parentTypeExecution.getStatus() <= 0){
+                modelMap.put("success", false);
+                modelMap.put("errMsg", parentTypeExecution.getStatusInfo());
+            }
+            modelMap.put("success", true);
+            modelMap.put("secondType", articleTypeExecution.getArticleTypeList());
+            modelMap.put("firstType", articleParentTypeExecution.getArticleTypeList());
+            modelMap.put("user", userExecution.getUser());
+            modelMap.put("articleCount", parentTypeExecution.getCount());
+            modelMap.put("articleList", parentTypeExecution.getArticleList());
+            return modelMap;
+        }
+
+        //查询符合条件文章
+        Article article2 = new Article();
+        if(typeId > 0){
+            ArticleType articleType2 = new ArticleType();
+            articleType2.setArticleTypeId(typeId);
+            article2.setArticleType(articleType2);
+        }
+        System.out.println(pageCount);
+        int rowIndex = 10 * (pageCount - 1);
+        ArticleExecution articleList = articleService.queryArticleList(article2, rowIndex, 10);
+        if(articleList.getState() != 1){
+            modelMap.put("success", false);
+            modelMap.put("errMsg", articleList.getStateInfo());
+            return modelMap;
+        }
+
+
 
         modelMap.put("secondType", articleTypeExecution.getArticleTypeList());
         modelMap.put("firstType", articleParentTypeExecution.getArticleTypeList());

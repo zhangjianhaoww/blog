@@ -55,10 +55,10 @@
 
                 </ul>
             </li>
-            <li><a href="lw-article.html">标准文章</a></li>
-            <li><a href="lw-img.html">图片库</a></li>
-            <li><a href="lw-article-fullwidth.html">全宽页面</a></li>
-            <li><a href="lw-timeline.html">存档</a></li>
+            <!--li><a href="lw-article.html">标准文章</a></li-->
+            <li><a href="/article/img">图片库</a></li>
+            <!--li><a href="lw-article-fullwidth.html">全宽页面</a></li>
+            <li><a href="lw-timeline.html">存档</a></li-->
         </ul>
         <form class="am-topbar-form am-topbar-right am-form-inline" role="search">
             <div class="am-form-group">
@@ -132,7 +132,7 @@
 <div class="am-g am-g-fixed blog-fixed">
     <div class="am-u-md-8 am-u-sm-12">
 
-        <article class="am-g blog-entry-article">
+        <!--article class="am-g blog-entry-article">
             <div class="am-u-lg-6 am-u-md-12 am-u-sm-12 blog-entry-img">
                 <img src="../../../resources/blog/assets/i/f10.jpg" alt="" class="am-u-sm-12">
             </div>
@@ -145,7 +145,7 @@
                 </p>
                 <p><a href="" class="blog-continue">continue reading</a></p>
             </div>
-        </article>
+        </article-->
 
         <div id="article-wrap"></div>
 
@@ -172,13 +172,9 @@
         </div-->
         <div class="blog-clear-margin blog-sidebar-widget blog-bor am-g ">
             <h2 class="blog-title"><span>TAG cloud</span></h2>
-            <div class="am-u-sm-12 blog-clear-padding">
-                <a href="" class="blog-tag">amaze</a>
-                <a href="" class="blog-tag">妹纸 UI</a>
-                <a href="" class="blog-tag">HTML5</a>
-                <a href="" class="blog-tag">这是标签</a>
-                <a href="" class="blog-tag">Impossible</a>
-                <a href="" class="blog-tag">开源前端框架</a>
+            <div class="am-u-sm-12 blog-clear-padding" id="tagCloud">
+
+
             </div>
         </div>
         <div class="blog-sidebar-widget blog-bor">
@@ -256,13 +252,19 @@
         var pageCount = 1;
         var articleCount = 0;
         var parentTypeId = getQueryString("parentTypeId");
-        alert(parentTypeId);
-        getArticleList();
+        var typeId = getQueryString("typeId");
+        alert(parentTypeId + '   ' + typeId);
+        getArticleList(pageCount, parentTypeId, typeId);
 
-        function getArticleList() {
+        function getArticleList(pageCount, parentTypeId, typeId) {
             $.ajax({
-                url:"/article/articleindexinfo?pageCount=" + pageCount,
+                url:"/article/articleindexinfo",
                 type:"get",
+                data:{
+                  pageCount:pageCount,
+                   parentTypeId:parentTypeId,
+                   typeId:typeId
+                },
                 dataType:"json",
                 success:function (data) {
                     if(data.success) {
@@ -270,11 +272,20 @@
                         handleList(data.articleList);
                         handleUser(data.user);
                         hadleArticleParentType(data.firstType);
+                        hadleArticleType(data.secondType);
                     }
                 }
 
             })
 
+        }
+
+        function hadleArticleType(data) {
+            var html = '';
+            data.map(function (item, index) {
+                html += '<a href="/article/index?typeId=' + item.articleTypeId + '" class="blog-tag">' + item.articleTypeName + '</a>';
+            });
+            $("#tagCloud").html(html);
         }
 
         function handleList(data) {
@@ -306,7 +317,7 @@
             }
             else{
                 pageCount -= 1;
-                getArticleList();
+                getArticleList(pageCount, parentTypeId, typeId);
             }
         })
 
@@ -316,7 +327,7 @@
             }
             else{
                 pageCount += 1;
-                getArticleList();
+                getArticleList(pageCount, parentTypeId, typeId);
             }
         })
 
@@ -327,7 +338,7 @@
             }
             else{
                 pageCount += 1;
-                getArticleList();
+                getArticleList(pageCount, parentTypeId, typeId);
             }
         }
 
@@ -341,7 +352,7 @@
 
         function hadleArticleParentType(data) {
 
-            var parentTypeHtml = '';
+            var parentTypeHtml = '<li><a href="/article/index">全部类型</a></li>';
             data.map(function (item, index) {
                 parentTypeHtml += '<li><a href="/article/index?parentTypeId=' + item.articleTypeId +'">' + item.articleTypeName + '</a></li> '
 

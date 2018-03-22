@@ -1,6 +1,61 @@
-2018-03-21 13:51:00 955 [main] DEBUG t.bilian.myblog.dao.UserDao.selectUserDetailsById-==>  Preparing: SELECT user_id, user_name, user_image, user_desc FROM tb_user WHERE user_id = ?; 
-2018-03-21 13:51:01 059 [main] DEBUG t.bilian.myblog.dao.UserDao.selectUserDetailsById-==> Parameters: 1(Long)
-2018-03-21 13:51:01 119 [main] DEBUG t.bilian.myblog.dao.UserDao.selectUserDetailsById-<==      Total: 1
-2018-03-21 14:08:57 831 [main] DEBUG t.bilian.myblog.dao.UserDao.selectUserDetailsById-==>  Preparing: SELECT user_id, user_name, user_image, user_desc FROM tb_user WHERE user_id = ?; 
-2018-03-21 14:08:57 929 [main] DEBUG t.bilian.myblog.dao.UserDao.selectUserDetailsById-==> Parameters: 1(Long)
-2018-03-21 14:08:57 984 [main] DEBUG t.bilian.myblog.dao.UserDao.selectUserDetailsById-<==      Total: 1
+2018-03-22 17:22:15 344 [main] DEBUG t.bilian.myblog.dao.ArticleDao.getArticleInitInfo-==>  Preparing: SELECT article_id, article_name, article_type_id, article_owner_id, article_last_edit_time FROM tb_article WHERE article_owner_id = ? ORDER BY article_id ASC LIMIT ?,? 
+2018-03-22 17:22:15 444 [main] DEBUG t.bilian.myblog.dao.ArticleDao.getArticleInitInfo-==> Parameters: 1(Long), 0(Integer), 10(Integer)
+2018-03-22 17:22:15 493 [main] DEBUG t.b.m.dao.ArticleTypeDao.selectFullArticleTypeById-====>  Preparing: SELECT ty1.article_type_id, ty1.article_type_name, ty2.article_type_id parent_article_type_id, ty2.article_type_name parent_article_type_name FROM tb_article_type ty1, tb_article_type ty2 WHERE ty1.parent_id = ty2.article_type_id AND ty1.article_type_id=? 
+2018-03-22 17:22:15 494 [main] DEBUG t.b.m.dao.ArticleTypeDao.selectFullArticleTypeById-====> Parameters: 3(Integer)
+2018-03-22 17:22:15 497 [main] DEBUG t.b.m.dao.ArticleTypeDao.selectFullArticleTypeById-<====      Total: 1
+2018-03-22 17:22:15 516 [main] DEBUG tech.bilian.myblog.dao.UserDao.selectUserById-====>  Preparing: SELECT user_id, user_name FROM tb_user WHERE user_id = ?; 
+2018-03-22 17:22:15 518 [main] DEBUG tech.bilian.myblog.dao.UserDao.selectUserById-====> Parameters: 1(Integer)
+2018-03-22 17:22:15 524 [main] DEBUG tech.bilian.myblog.dao.UserDao.selectUserById-<====      Total: 1
+2018-03-22 17:22:15 528 [main] DEBUG t.bilian.myblog.dao.ArticleDao.getArticleInitInfo-<==      Total: 3
+2018-03-22 17:22:58 371 [main] DEBUG t.bilian.myblog.dao.ArticleDao.getArticleInitInfo-==>  Preparing: SELECT article_id, article_name, article_type_id, article_owner_id, article_last_edit_time FROM tb_article WHERE article_owner_id = ? ORDER BY article_id ASC LIMIT ?,? 
+2018-03-22 17:22:58 453 [main] DEBUG t.bilian.myblog.dao.ArticleDao.getArticleInitInfo-==> Parameters: 1(Long), 0(Integer), 10(Integer)
+2018-03-22 17:22:58 531 [main] DEBUG t.b.m.dao.ArticleTypeDao.selectFullArticleTypeById-====>  Preparing: SELECT ty1.article_type_id, ty1.article_type_name, ty2.article_type_id parent_article_type_id, ty2.article_type_name parent_article_type_name FROM tb_article_type ty1, tb_article_type ty2 WHERE ty1.parent_id = ty2.article_type_id AND ty1.article_type_id=? 
+2018-03-22 17:22:58 532 [main] DEBUG t.b.m.dao.ArticleTypeDao.selectFullArticleTypeById-====> Parameters: 3(Integer)
+2018-03-22 17:22:58 543 [main] DEBUG t.b.m.dao.ArticleTypeDao.selectFullArticleTypeById-<====      Total: 1
+2018-03-22 17:22:58 553 [main] DEBUG tech.bilian.myblog.dao.UserDao.selectUserById-====>  Preparing: SELECT user_id, user_name FROM tb_user WHERE user_id = ?; 
+2018-03-22 17:22:58 554 [main] DEBUG tech.bilian.myblog.dao.UserDao.selectUserById-====> Parameters: 1(Integer)
+2018-03-22 17:22:58 558 [main] DEBUG tech.bilian.myblog.dao.UserDao.selectUserById-<====      Total: 1
+2018-03-22 17:22:58 562 [main] DEBUG t.bilian.myblog.dao.ArticleDao.getArticleInitInfo-<==      Total: 3
+2018-03-22 17:49:11 088 [main] DEBUG t.b.m.dao.ArticleDao.selectArticleByParentTypeId-==>  Preparing: SELECT article_id, article_name, article_image, article_type_id, article_owner_id, article_desc, article_create_time, article_priority FROM tb_article ta, tb_article_type ty WHERE ta.article_type_id = ty.article_type_id AND ty.parent_id = #(article.articleType.parent.articleTypeId) 
+2018-03-22 17:49:11 219 [main] DEBUG t.b.m.dao.ArticleDao.selectArticleByParentTypeId-==> Parameters: 
+2018-03-22 17:52:05 187 [main] DEBUG t.b.m.dao.ArticleDao.selectArticleByParentTypeId-==>  Preparing: SELECT ta.article_id, ta.article_name, ta.article_image, ta.article_type_id, ta.article_owner_id, ta.article_desc, ta.article_create_time, ta.article_priority FROM tb_article ta, tb_article_type ty WHERE ta.article_type_id = ty.article_type_id AND ty.parent_id = ? ORDER BY ta.priority DESC LIMIT ?,? 
+2018-03-22 17:52:05 254 [main] DEBUG t.b.m.dao.ArticleDao.selectArticleByParentTypeId-==> Parameters: 1(Integer), 0(Integer), 10(Integer)
+2018-03-22 17:52:38 975 [main] DEBUG t.b.m.dao.ArticleDao.selectArticleByParentTypeId-==>  Preparing: SELECT ta.article_id, ta.article_name, ta.article_image, ta.article_type_id, ta.article_owner_id, ta.article_desc, ta.article_create_time, ta.article_priority FROM tb_article ta, tb_article_type ty WHERE ta.article_type_id = ty.article_type_id AND ty.parent_id = ? ORDER BY ta.article_priority DESC LIMIT ?,? 
+2018-03-22 17:52:39 067 [main] DEBUG t.b.m.dao.ArticleDao.selectArticleByParentTypeId-==> Parameters: 1(Integer), 0(Integer), 10(Integer)
+2018-03-22 17:52:39 110 [main] DEBUG t.b.m.dao.ArticleTypeDao.selectFullArticleTypeById-====>  Preparing: SELECT ty1.article_type_id, ty1.article_type_name, ty2.article_type_id parent_article_type_id, ty2.article_type_name parent_article_type_name FROM tb_article_type ty1, tb_article_type ty2 WHERE ty1.parent_id = ty2.article_type_id AND ty1.article_type_id=? 
+2018-03-22 17:52:39 110 [main] DEBUG t.b.m.dao.ArticleTypeDao.selectFullArticleTypeById-====> Parameters: 3(Integer)
+2018-03-22 17:52:39 112 [main] DEBUG t.b.m.dao.ArticleTypeDao.selectFullArticleTypeById-<====      Total: 1
+2018-03-22 17:52:39 120 [main] DEBUG tech.bilian.myblog.dao.UserDao.selectUserById-====>  Preparing: SELECT user_id, user_name FROM tb_user WHERE user_id = ?; 
+2018-03-22 17:52:39 122 [main] DEBUG tech.bilian.myblog.dao.UserDao.selectUserById-====> Parameters: 1(Integer)
+2018-03-22 17:52:39 129 [main] DEBUG tech.bilian.myblog.dao.UserDao.selectUserById-<====      Total: 1
+2018-03-22 17:52:39 135 [main] DEBUG t.b.m.dao.ArticleDao.selectArticleByParentTypeId-<==      Total: 3
+2018-03-22 18:24:59 492 [main] DEBUG t.bilian.myblog.dao.ArticleDao.queryArticleCount-==>  Preparing: SELECT COUNT(1) FROM tb_article 
+2018-03-22 18:24:59 568 [main] DEBUG t.bilian.myblog.dao.ArticleDao.queryArticleCount-==> Parameters: 
+2018-03-22 18:24:59 600 [main] DEBUG t.bilian.myblog.dao.ArticleDao.queryArticleCount-<==      Total: 1
+2018-03-22 18:36:32 462 [main] DEBUG t.b.m.dao.ArticleDao.queryArticleCountByParentId-==>  Preparing: SELECT COUNT(1) FROM tb_article ta, tb_article_type ty WHERE ta.article_type_id = ty.article_type_id AND ty.parent_id = ? 
+2018-03-22 18:36:32 537 [main] DEBUG t.b.m.dao.ArticleDao.queryArticleCountByParentId-==> Parameters: 1(Integer)
+2018-03-22 18:36:32 584 [main] DEBUG t.b.m.dao.ArticleDao.queryArticleCountByParentId-<==      Total: 1
+2018-03-22 21:01:08 176 [main] DEBUG t.b.m.dao.ArticleDao.queryArticleCountByParentId-==>  Preparing: SELECT COUNT(1) FROM tb_article ta, tb_article_type ty WHERE ta.article_type_id = ty.article_type_id AND ty.parent_id = ? 
+2018-03-22 21:01:08 237 [main] DEBUG t.b.m.dao.ArticleDao.queryArticleCountByParentId-==> Parameters: 1(Integer)
+2018-03-22 21:01:08 266 [main] DEBUG t.b.m.dao.ArticleDao.queryArticleCountByParentId-<==      Total: 1
+2018-03-22 21:01:08 281 [main] DEBUG t.b.m.dao.ArticleDao.selectArticleByParentTypeId-==>  Preparing: SELECT ta.article_id, ta.article_name, ta.article_image, ta.article_type_id, ta.article_owner_id, ta.article_desc, ta.article_create_time, ta.article_priority FROM tb_article ta, tb_article_type ty WHERE ta.article_type_id = ty.article_type_id AND ty.parent_id = ? ORDER BY ta.article_priority DESC LIMIT ?,? 
+2018-03-22 21:01:08 282 [main] DEBUG t.b.m.dao.ArticleDao.selectArticleByParentTypeId-==> Parameters: 1(Integer), 0(Integer), 10(Integer)
+2018-03-22 21:01:08 289 [main] DEBUG t.b.m.dao.ArticleTypeDao.selectFullArticleTypeById-====>  Preparing: SELECT ty1.article_type_id, ty1.article_type_name, ty2.article_type_id parent_article_type_id, ty2.article_type_name parent_article_type_name FROM tb_article_type ty1, tb_article_type ty2 WHERE ty1.parent_id = ty2.article_type_id AND ty1.article_type_id=? 
+2018-03-22 21:01:08 290 [main] DEBUG t.b.m.dao.ArticleTypeDao.selectFullArticleTypeById-====> Parameters: 3(Integer)
+2018-03-22 21:01:08 293 [main] DEBUG t.b.m.dao.ArticleTypeDao.selectFullArticleTypeById-<====      Total: 1
+2018-03-22 21:01:08 294 [main] DEBUG tech.bilian.myblog.dao.UserDao.selectUserById-====>  Preparing: SELECT user_id, user_name FROM tb_user WHERE user_id = ?; 
+2018-03-22 21:01:08 296 [main] DEBUG tech.bilian.myblog.dao.UserDao.selectUserById-====> Parameters: 1(Integer)
+2018-03-22 21:01:08 301 [main] DEBUG tech.bilian.myblog.dao.UserDao.selectUserById-<====      Total: 1
+2018-03-22 21:01:08 307 [main] DEBUG t.b.m.dao.ArticleDao.selectArticleByParentTypeId-<==      Total: 3
+2018-03-22 21:14:09 042 [main] DEBUG t.b.m.dao.ArticleDao.queryArticleCountByParentId-==>  Preparing: SELECT COUNT(1) FROM tb_article ta, tb_article_type ty WHERE ta.article_type_id = ty.article_type_id AND ty.parent_id = ? 
+2018-03-22 21:14:09 157 [main] DEBUG t.b.m.dao.ArticleDao.queryArticleCountByParentId-==> Parameters: 1(Integer)
+2018-03-22 21:14:09 200 [main] DEBUG t.b.m.dao.ArticleDao.queryArticleCountByParentId-<==      Total: 1
+2018-03-22 21:14:09 218 [main] DEBUG t.b.m.dao.ArticleDao.selectArticleByParentTypeId-==>  Preparing: SELECT ta.article_id, ta.article_name, ta.article_image, ta.article_type_id, ta.article_owner_id, ta.article_desc, ta.article_create_time, ta.article_priority FROM tb_article ta, tb_article_type ty WHERE ta.article_type_id = ty.article_type_id AND ty.parent_id = ? ORDER BY ta.article_priority DESC LIMIT ?,? 
+2018-03-22 21:14:09 220 [main] DEBUG t.b.m.dao.ArticleDao.selectArticleByParentTypeId-==> Parameters: 1(Integer), 0(Integer), 10(Integer)
+2018-03-22 21:14:09 226 [main] DEBUG t.b.m.dao.ArticleTypeDao.selectFullArticleTypeById-====>  Preparing: SELECT ty1.article_type_id, ty1.article_type_name, ty2.article_type_id parent_article_type_id, ty2.article_type_name parent_article_type_name FROM tb_article_type ty1, tb_article_type ty2 WHERE ty1.parent_id = ty2.article_type_id AND ty1.article_type_id=? 
+2018-03-22 21:14:09 227 [main] DEBUG t.b.m.dao.ArticleTypeDao.selectFullArticleTypeById-====> Parameters: 3(Integer)
+2018-03-22 21:14:09 230 [main] DEBUG t.b.m.dao.ArticleTypeDao.selectFullArticleTypeById-<====      Total: 1
+2018-03-22 21:14:09 231 [main] DEBUG tech.bilian.myblog.dao.UserDao.selectUserById-====>  Preparing: SELECT user_id, user_name FROM tb_user WHERE user_id = ?; 
+2018-03-22 21:14:09 232 [main] DEBUG tech.bilian.myblog.dao.UserDao.selectUserById-====> Parameters: 1(Integer)
+2018-03-22 21:14:09 236 [main] DEBUG tech.bilian.myblog.dao.UserDao.selectUserById-<====      Total: 1
+2018-03-22 21:14:09 241 [main] DEBUG t.b.m.dao.ArticleDao.selectArticleByParentTypeId-<==      Total: 3
