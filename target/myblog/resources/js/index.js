@@ -78,7 +78,7 @@ $(function () {
     function hadleArticleType(data) {
         var html = '';
         data.map(function (item, index) {
-            html += '<a href="myblog/article/index?typeId=' + item.articleTypeId + '" class="blog-tag">' + item.articleTypeName + '</a>';
+            html += '<a href="/myblog/article/index?typeId=' + item.articleTypeId + '" class="blog-tag">' + item.articleTypeName + '</a>';
         });
         $("#tagCloud").html(html);
     }

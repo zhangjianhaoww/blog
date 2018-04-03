@@ -90,4 +90,6 @@ public interface ArticleDao {
      * @return
      */
     List<Article> selectArticleByParentTypeId(@Param("article") Article article , @Param("rowIndex")int rowIndex, @Param("pageSize")int pageSize);
+
+    Article getArticleById(long id);
 }

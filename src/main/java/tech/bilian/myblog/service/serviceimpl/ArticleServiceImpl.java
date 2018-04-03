@@ -1,7 +1,9 @@
 package tech.bilian.myblog.service.serviceimpl;
 
 import tech.bilian.myblog.dao.ArticleDao;
+import tech.bilian.myblog.dao.cache.RedisDao;
 import tech.bilian.myblog.dto.ArticleExecution;
+import tech.bilian.myblog.dto.Execution;
 import tech.bilian.myblog.dto.ParentTypeExecution;
 import tech.bilian.myblog.pojo.Article;
 import tech.bilian.myblog.pojo.ArticleType;
@@ -24,6 +26,9 @@ public class ArticleServiceImpl implements ArticleService{
     @Resource
     ArticleDao articleDao;
 
+    @Resource
+    RedisDao redisDao;
+
     /**
      * admin页面初始化时获得文章信息
      *
@@ -33,9 +38,9 @@ public class ArticleServiceImpl implements ArticleService{
      * @return
      */
     @Override
-    public ArticleExecution getArticleInitInfo(Article article, int rowIndex, int pageSize) {
+    public Execution<Article> getArticleInitInfo(Article article, int rowIndex, int pageSize) {
         List<Article> articleList = articleDao.getArticleInitInfo(article, rowIndex, pageSize);
-        return new ArticleExecution(1, "success", articleList.size(), articleList);
+        return new Execution<Article>(1, "success", articleList);
     }
 
     @Override
@@ -88,9 +93,9 @@ public class ArticleServiceImpl implements ArticleService{
      */
     @Override
     @Transactional
-    public ArticleExecution insertArticle(Article article, Image image, Long userId) {
+    public Execution insertArticle(Article article, Image image, Long userId) {
         if(article == null){
-            return new ArticleExecution(-1, "article 不能为空！！！！");
+            return new Execution<Article>(-1, "article 不能为空！！！！");
         }
         try{
             article.setArticleLike(0);
@@ -123,8 +128,9 @@ public class ArticleServiceImpl implements ArticleService{
             }
         }catch (Exception e){
             throw new RuntimeException(e.getMessage());
+
         }
-        return new ArticleExecution(1, "添加成功！！！");
+        return new Execution<Article>(1, "添加成功！！！");
         // return articleDao.insertArticle(article);
     }
 
@@ -141,16 +147,47 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public ArticleExecution queryArticleList(Article article, int rowIndex, int pageSize) {
+    public Execution<Article> queryArticleList(Article article, int rowIndex, int pageSize) {
         List<Article> articleList = articleDao.queryArticleList(article, rowIndex, pageSize);
         if(articleList == null){
-            return new ArticleExecution(-1, "文章列表查找失败！！！！");
+            return new Execution<Article>(-1, "文章列表查找失败！！！！");
         }
         else{
-            return new ArticleExecution(1, "success", articleList.size(), articleList );
+            return new Execution<Article>(1, "success", articleList );
         }
     }
 
+    /**
+     * 通过文章id查询文章信息
+     * redis缓存
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Execution<Article> getArticleById(long id) {
+        if(id <= 0){
+            return new Execution<Article>(-1, "文章id错误！！！!");
+        }
+        Article article;
+
+        //先从redis缓存中取数据
+        article = redisDao.getArticle(id);
+        if(article != null){
+            return new Execution<Article>(1, "文章查询成功", article);
+        }
+
+        //缓存中没有时再从数据库中取
+        article = articleDao.getArticleById(id);
+        if(article == null){
+            return new Execution<Article>(-2, "文章不存在！！！！");
+
+        }
+        //写入缓存
+        redisDao.putAtricle(article);
+
+        return new Execution<Article>(1, "文章查询成功", article);
+    }
 
     private void addArticleImg(Article article, Image image)  throws Exception{
         String dest = PathUtil.getShopImagePath(article.getArticleOwner().getUserId(), article.getArticleId());

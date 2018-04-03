@@ -16,6 +16,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import tech.bilian.myblog.dao.UserDao;
 import tech.bilian.myblog.dto.ArticleExecution;
 import tech.bilian.myblog.dto.ArticleTypeExecution;
+import tech.bilian.myblog.dto.Execution;
 import tech.bilian.myblog.dto.UserExecution;
 import tech.bilian.myblog.pojo.Article;
 import tech.bilian.myblog.pojo.ArticleType;
@@ -117,7 +118,7 @@ public class AdminController {
             Image image = new Image(articleImage.getOriginalFilename(), articleImage.getInputStream());
             Long userId = Long.valueOf(request.getSession().getAttribute("userId").toString());
 
-            ArticleExecution articleExecution = articleService.insertArticle(article, image, userId);
+            Execution<Article> articleExecution = articleService.insertArticle(article, image, userId);
             if(articleExecution.getState() == 1){
                 modelMap.put("success", true);
                 modelMap.put("successMsg", "添加成功");
@@ -390,8 +391,8 @@ public class AdminController {
             modelMap.put("errMsg", "无效页面");
             return  modelMap;
         }
-        ArticleExecution  execution = articleService.getArticleInitInfo(article, rowIndex, 10 );
-        List<Article> articles = execution.getArticleList();
+        Execution<Article> execution = articleService.getArticleInitInfo(article, rowIndex, 10 );
+        List<Article> articles = execution.getModels();
         ArticleType articleType = new ArticleType();
         articleType.setParent(new ArticleType());
         ArticleTypeExecution articleTypeExecution = articleTypeService.queryArticleType(articleType);

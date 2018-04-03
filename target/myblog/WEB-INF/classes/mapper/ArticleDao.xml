@@ -204,4 +204,21 @@
         LIMIT #{rowIndex},#{pageSize}
     </select>
 
+    <select id="getArticleById" resultMap="FullArticle">
+        SELECT article_id,
+                article_name,
+                article_image,
+                article_type_id,
+                article_owner_id,
+                article_desc,
+                article_text,
+                article_create_time,
+                article_last_edit_time,
+                article_like,
+                article_priority
+        FROM tb_article
+        WHERE article_id = #{id}
+
+    </select>
+
 </mapper>

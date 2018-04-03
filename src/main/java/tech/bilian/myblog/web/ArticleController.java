@@ -4,10 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import tech.bilian.myblog.dto.ArticleExecution;
-import tech.bilian.myblog.dto.ArticleTypeExecution;
-import tech.bilian.myblog.dto.ParentTypeExecution;
-import tech.bilian.myblog.dto.UserExecution;
+import tech.bilian.myblog.dto.*;
 import tech.bilian.myblog.pojo.Article;
 import tech.bilian.myblog.pojo.ArticleType;
 import tech.bilian.myblog.service.ArticleService;
@@ -112,7 +109,7 @@ public class ArticleController {
         }
         System.out.println(pageCount);
         int rowIndex = 10 * (pageCount - 1);
-        ArticleExecution articleList = articleService.queryArticleList(article2, rowIndex, 10);
+        Execution<Article> articleList = articleService.queryArticleList(article2, rowIndex, 10);
         if(articleList.getState() != 1){
             modelMap.put("success", false);
             modelMap.put("errMsg", articleList.getStateInfo());
@@ -125,7 +122,7 @@ public class ArticleController {
         modelMap.put("firstType", articleParentTypeExecution.getArticleTypeList());
         modelMap.put("articleCount", articleCount);
         modelMap.put("success", true);
-        modelMap.put("articleList", articleList.getArticleList());
+        modelMap.put("articleList", articleList.getModels());
         modelMap.put("user", userExecution.getUser());
 
         System.out.println("dlfkjsl;fjsflaskjfasldfjdasklfd");
@@ -156,12 +153,12 @@ public class ArticleController {
             modelMap.put("errMsg", "文章选择错误！！！");
             return modelMap;
         }
-        Article article = new Article();
-        article.setArticleId(articleId);
-        ArticleExecution articleExecution = articleService.queryArticleList(article, 0, 1);
-        if(articleExecution.getCount() <= 0){
+//        Article article = new Article();
+//        article.setArticleId(articleId);
+        Execution<Article> articleExecution = articleService.getArticleById(articleId);
+        if(articleExecution.getState()<0){
             modelMap.put("success", false);
-            modelMap.put("errMsg", "文章选择不存在！！！");
+            modelMap.put("errMsg", articleExecution.getStateInfo());
             return modelMap;
         }
 //        long articleSize = articleService.queryArticleCount(null);
@@ -170,9 +167,9 @@ public class ArticleController {
 //            modelMap.put("errMsg", "文章总数查询失败！！！");
 //            return modelMap;
 //        }
-        System.out.println(articleExecution.getArticleList().size());
+
         modelMap.put("success", true);
-        modelMap.put("article", articleExecution.getArticleList().get(0));
+        modelMap.put("article", articleExecution.getModel());
         //modelMap.put("articleSize", articleSize);
         return modelMap;
     }

@@ -2,6 +2,7 @@ package tech.bilian.myblog.service;
 
 import org.springframework.stereotype.Service;
 import tech.bilian.myblog.dto.ArticleExecution;
+import tech.bilian.myblog.dto.Execution;
 import tech.bilian.myblog.dto.ParentTypeExecution;
 import tech.bilian.myblog.pojo.Article;
 import tech.bilian.myblog.utils.Image;
@@ -17,10 +18,10 @@ public interface ArticleService {
      * @param article
      * @return
      */
-    ArticleExecution insertArticle(Article article, Image image, Long userId);
+    Execution<Article> insertArticle(Article article, Image image, Long userId);
 
 
-    ArticleExecution queryArticleList(Article article, int rowIndex, int pageSize);
+    Execution<Article> queryArticleList(Article article, int rowIndex, int pageSize);
 
 
     int queryArticleCount(Article article);
@@ -33,7 +34,7 @@ public interface ArticleService {
      * @param pageSize
      * @return
      */
-    ArticleExecution getArticleInitInfo(Article article, int rowIndex, int pageSize);
+    Execution<Article> getArticleInitInfo(Article article, int rowIndex, int pageSize);
 
 
     int getArticleInitInfoCount(Article article);
@@ -47,5 +48,11 @@ public interface ArticleService {
      */
     ParentTypeExecution getArticleIndexInfoByParentType(Article article, int rowIndex, int pageSize);
 
-
+    /**
+     * 通过文章id查询文章信息
+     *
+     * @param id
+     * @return
+     */
+    Execution<Article> getArticleById(long id);
 }

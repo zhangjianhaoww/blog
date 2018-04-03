@@ -84,4 +84,11 @@ public class ArticleDaoTest extends BaseTest {
         int result = articleDao.queryArticleCountByParentId(article);
         System.out.println(result);
     }
+
+    @Test
+    public void getArticleByIdTest(){
+        Article article = articleDao.getArticleById(5L);
+        System.out.println(article.getArticleName());
+        assertNotNull(article);
+    }
 }

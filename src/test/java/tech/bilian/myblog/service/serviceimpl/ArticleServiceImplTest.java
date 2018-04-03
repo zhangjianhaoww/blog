@@ -3,6 +3,7 @@ package tech.bilian.myblog.service.serviceimpl;
 import org.junit.Test;
 import tech.bilian.myblog.BaseTest;
 import tech.bilian.myblog.dto.ArticleExecution;
+import tech.bilian.myblog.dto.Execution;
 import tech.bilian.myblog.dto.ParentTypeExecution;
 import tech.bilian.myblog.pojo.Article;
 import tech.bilian.myblog.pojo.ArticleType;
@@ -24,7 +25,7 @@ public class ArticleServiceImplTest extends BaseTest{
         User user = new User();
         user.setUserId(1L);
         article.setArticleOwner(user);
-        ArticleExecution articleExecution = articleService.getArticleInitInfo(article, 0, 10);
+        Execution<Article> articleExecution = articleService.getArticleInitInfo(article, 0, 10);
         System.out.println(articleExecution.getCount());
     }
 
@@ -42,7 +43,9 @@ public class ArticleServiceImplTest extends BaseTest{
     }
 
     @Test
-    public void queryArticleCount() {
+    public void getArticleByIdTest() {
+        Execution<Article> articleExecution = articleService.getArticleById(5L);
+        System.out.println(articleExecution.getModel().getArticleName());
     }
 
     @Test

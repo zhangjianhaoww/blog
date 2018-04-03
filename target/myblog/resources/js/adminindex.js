@@ -1,5 +1,5 @@
 $(function () {
-    var url = "myblog/admin/admininitinfo";
+    var url = "/myblog/admin/admininitinfo";
     var articlePage = 1;
     var articleType = null;
     var pageCount = 1;
@@ -30,7 +30,7 @@ $(function () {
         data.map(function (item, index) {
             html += '<tr>'
                 +'<td>'+ item.articleId + '</td>'
-                +'<td><a href="/article/articledetails?articleId=' + item.articleId +'">' + item.articleName + '</a></td>'
+                +'<td><a href="/myblog/article/articledetails?articleId=' + item.articleId +'">' + item.articleName + '</a></td>'
                 +'<td>' + item.articleId +'</td>' //item.articleType
                 +'<td class="am-hide-sm-only">' + item.articleId +'</td>' //item.articleOwner.userName
                 +' <td class="am-hide-sm-only">' + item.articleLastEditTime +'</td>'
