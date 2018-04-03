@@ -1,5 +1,5 @@
 $(function () {
-    url = '/admin/checkuser';
+    url = 'myblog/admin/checkuser';
 
     $("#submit").click(function () {
         var user= $("#userName").val();
@@ -10,7 +10,7 @@ $(function () {
             return;
         }
 
-        $.post('/admin/checkuser',
+        $.post('myblog/admin/checkuser',
             {
                 userName:user,
                 password:password,

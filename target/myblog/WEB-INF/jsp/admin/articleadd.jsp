@@ -18,13 +18,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp" />
-    <link rel="icon" type="image/png" href="../../../resources/admin/assets/i/favicon.png">
-    <link rel="apple-touch-icon-precomposed" href="../../../resources/admin/assets/i/app-icon72x72@2x.png">
+    <link rel="icon" type="image/png" href="../resources/admin/assets/i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="../resources/admin/assets/i/app-icon72x72@2x.png">
     <meta name="apple-mobile-web-app-title" content="Amaze UI" />
-    <link rel="stylesheet" href="../../../resources/admin/assets/css/amazeui.min.css" />
-    <link rel="stylesheet" href="../../../resources/admin/assets/css/admin.css">
-    <link rel="stylesheet" href="../../../resources/admin/assets/css/app.css">
-    <link rel="stylesheet" href="../../../resources/md/css/am-md.css">
+    <link rel="stylesheet" href="../resources/admin/assets/css/amazeui.min.css" />
+    <link rel="stylesheet" href="../resources/admin/assets/css/admin.css">
+    <link rel="stylesheet" href="../resources/admin/assets/css/app.css">
+    <link rel="stylesheet" href="../resources/md/css/am-md.css">
 </head>
 
 <body data-type="generalComponents">
@@ -33,7 +33,7 @@
 <header class="am-topbar am-topbar-inverse admin-header">
     <div class="am-topbar-brand">
         <a href="javascript:;" class="tpl-logo">
-            <img src="../../../resources/admin/assets/img/logo.png" alt="">
+            <img src="../resources/admin/assets/img/logo.png" alt="">
         </a>
     </div>
     <div class="am-icon-list tpl-header-nav-hover-ico am-fl am-margin-right">
@@ -73,7 +73,7 @@
                     <li>
                         <a href="#" class="tpl-dropdown-content-message">
                                 <span class="tpl-dropdown-content-photo">
-                      <img src="../../../resources/admin/assets/img/user02.png" alt=""> </span>
+                      <img src="../resources/admin/assets/img/user02.png" alt=""> </span>
                             <span class="tpl-dropdown-content-subject">
                       <span class="tpl-dropdown-content-from"> 禁言小张 </span>
                                 <span class="tpl-dropdown-content-time">10分钟前 </span>
@@ -82,7 +82,7 @@
                         </a>
                         <a href="#" class="tpl-dropdown-content-message">
                                 <span class="tpl-dropdown-content-photo">
-                      <img src="../../../resources/admin/assets/img/user03.png" alt=""> </span>
+                      <img src="../resources/admin/assets/img/user03.png" alt=""> </span>
                             <span class="tpl-dropdown-content-subject">
                       <span class="tpl-dropdown-content-from"> Steam </span>
                                 <span class="tpl-dropdown-content-time">18分钟前</span>
@@ -429,15 +429,15 @@
 </div>
 
 
-<script src="../../../resources/admin/assets/js/jquery.min.js" charset="UTF-8"></script>
-<script src="../../../resources/admin/assets/js/amazeui.min.js" charset="UTF-8"></script>
-<script src="../../../resources/admin/assets/js/app.js" charset="UTF-8"></script>
-<script src="../../../resources/md/js/md.js" charset="UTF-8"></script>
-<script src="../../../resources/md/js/tomd.js"  charset="UTF-8"></script>
-<script src="../../../resources/md/js/am-md.js" charset="UTF-8"></script>
+<script src="../resources/admin/assets/js/jquery.min.js" charset="UTF-8"></script>
+<script src="../resources/admin/assets/js/amazeui.min.js" charset="UTF-8"></script>
+<script src="../resources/admin/assets/js/app.js" charset="UTF-8"></script>
+<script src="../resources/md/js/md.js" charset="UTF-8"></script>
+<script src="../resources/md/js/tomd.js"  charset="UTF-8"></script>
+<script src="../resources/md/js/am-md.js" charset="UTF-8"></script>
 <script src="https://cdn.bootcss.com/marked/0.3.17/marked.js"></script>
-<script src="../../../resources/js/articleadd.js" charset="UTF-8"></script>
-<script src="../../../resources/js/common/commons.js" charset="UTF-8"></script>
+<script src="../resources/js/articleadd.js" charset="UTF-8"></script>
+<script src="../resources/js/common/commons.js" charset="UTF-8"></script>
 </body>
 
 </html>

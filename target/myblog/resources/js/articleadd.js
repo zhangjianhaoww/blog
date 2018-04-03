@@ -51,7 +51,7 @@ $(function(){
 
         $.ajax({
             // url : (isEdit ? editShopUrl : registerShopUrl),
-            url:  '/admin/articleinsert',
+            url:  'myblog/admin/articleinsert',
             type : 'post',
             data : formData,
             contentType : false,
@@ -75,7 +75,7 @@ $(function(){
     })
 
     function getInsertPageInitInfo() {
-        $.getJSON("/admin/getinsertpageinitinfo", function (data) {
+        $.getJSON("myblog/admin/getinsertpageinitinfo", function (data) {
             if(data.success){
                 insertType(data.articleTypeList);
 

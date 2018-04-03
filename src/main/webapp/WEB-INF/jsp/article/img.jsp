@@ -1,11 +1,5 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: haru
-  Date: 18-3-21
-  Time: 下午4:43
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -16,30 +10,29 @@
     <title>image   | Amaze UI Examples</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
-    <link rel="icon" type="image/png" href="../../../resources/blog/assets/i/favicon.png">
+    <link rel="icon" type="image/png" href="../resources/blog/assets/i/favicon.png">
     <meta name="mobile-web-app-capable" content="yes">
-    <link rel="icon" sizes="192x192" href="../../../resources/blog/assets/i/app-icon72x72@2x.png">
+    <link rel="icon" sizes="192x192" href="../resources/blog/assets/i/app-icon72x72@2x.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
-    <link rel="apple-touch-icon-precomposed" href="../../../resources/blog/assets/i/app-icon72x72@2x.png">
+    <link rel="apple-touch-icon-precomposed" href="../resources/blog/assets/i/app-icon72x72@2x.png">
     <meta name="msapplication-TileImage" content="assets/i/app-icon72x72@2x.png">
     <meta name="msapplication-TileColor" content="#0e90d2">
-    <link rel="stylesheet" href="../../../resources/blog/assets/css/amazeui.min.css">
-    <link rel="stylesheet" href="../../../resources/blog/assets/css/app.css">
+    <link rel="stylesheet" href="../resources/blog/assets/css/amazeui.min.css">
+    <link rel="stylesheet" href="../resources/blog/assets/css/app.css">
 </head>
 
 <body id="blog-article-sidebar">
 <!-- header start -->
-<!--
 <header class="am-g am-g-fixed blog-fixed blog-text-center blog-header">
     <div class="am-u-sm-8 am-u-sm-centered">
-        <img width="200" src="http://s.amazeui.org/media/i/brand/amazeui-b.png" alt="Amaze UI Logo"/>
-        <h2 class="am-hide-sm-only">中国首个开源 HTML5 跨屏前端框架</h2>
+        <!--img width="200" src="http://s.amazeui.org/media/i/brand/amazeui-b.png" alt="Amaze UI Logo"/>
+        <h2 class="am-hide-sm-only">中国首个开源 HTML5 跨屏前端框架</h2-->
     </div>
 </header>
 <!-- header end -->
-<hr>
+<!--hr>
 
 <!-- nav start -->
 <nav class="am-g am-g-fixed blog-fixed blog-nav">
@@ -77,36 +70,36 @@
 <div class="am-g am-g-fixed blog-fixed blog-content">
     <figure data-am-widget="figure" class="am am-figure am-figure-default "   data-am-figure="{  pureview: 'true' }">
         <div id="container">
-            <div><img src="../../../resources/blog/images/01.jpg"><h3>Agfa</h3></div>
-            <div><img src="../../../resources/blog/images/02.jpg"><h3>Auto</h3></div>
-            <div><img src="../../../resources/blog/images/03.jpg"><h3>Bald eagle</h3></div>
-            <div><img src="../../../resources/blog/images/04.jpg"><h3>Black swan</h3></div>
-            <div><img src="../../../resources/blog/images/05.jpg"><h3>Book shelf</h3></div>
-            <div><img src="../../../resources/blog/images/06.jpg"><h3>Camera</h3></div>
-            <div><img src="../../../resources/blog/images/07.jpg"><h3>Camera</h3></div>
-            <div><img src="../../../resources/blog/images/25.jpg"><h3>Vintage camera</h3></div>
-            <div><img src="../../../resources/blog/images/09.jpg"><h3>Coffee</h3></div>
-            <div><img src="../../../resources/blog/images/10.jpg"><h3>Cookies</h3></div>
-            <div><img src="../../../resources/blog/images/11.jpg"><h3>Cubes</h3></div>
-            <div><img src="../../../resources/blog/images/12.jpg"><h3>DJ</h3></div>
-            <div><img src="../../../resources/blog/images/13.jpg"><h3>Doors</h3></div>
-            <div><img src="../../../resources/blog/images/14.jpg"><h3>Matchbox</h3></div>
-            <div><img src="../../../resources/blog/images/15.jpg"><h3>Freiburg</h3></div>
-            <div><img src="../../../resources/blog/images/16.jpg"><h3>Henna</h3></div>
-            <div><img src="../../../resources/blog/images/17.jpg"><h3>Home office</h3></div>
-            <div><img src="../../../resources/blog/images/18.jpg"><h3>iPad</h3></div>
-            <div><img src="../../../resources/blog/images/19.jpg"><h3>Keyboard</h3></div>
-            <div><img src="../../../resources/blog/images/20.jpg"><h3>Lynx</h3></div>
-            <div><img src="../../../resources/blog/images/21.jpg"><h3>Mac</h3></div>
-            <div><img src="../../../resources/blog/images/22.jpg"><h3>Notebook</h3></div>
-            <div><img src="../../../resources/blog/images/23.jpg"><h3>Thoughts</h3></div>
-            <div><img src="../../../resources/blog/images/24.jpg"><h3>Office</h3></div>
-            <div><img src="../../../resources/blog/images/25.jpg"><h3>Children</h3></div>
-            <div><img src="../../../resources/blog/images/26.jpg"><h3>Portrait</h3></div>
-            <div><img src="../../../resources/blog/images/27.jpg"><h3>Startup</h3></div>
-            <div><img src="../../../resources/blog/images/28.jpg"><h3>Sun</h3></div>
-            <div><img src="../../../resources/blog/images/29.jpg"><h3>The Eiffel Tower</h3></div>
-            <div><img src="../../../resources/blog/images/30.jpg"><h3>Water drops</h3></div>
+            <div><img src="../resources/blog/images/01.jpg"><h3>Agfa</h3></div>
+            <div><img src="../resources/blog/images/02.jpg"><h3>Auto</h3></div>
+            <div><img src="../resources/blog/images/03.jpg"><h3>Bald eagle</h3></div>
+            <div><img src="../resources/blog/images/04.jpg"><h3>Black swan</h3></div>
+            <div><img src="../resources/blog/images/05.jpg"><h3>Book shelf</h3></div>
+            <div><img src="../resources/blog/images/06.jpg"><h3>Camera</h3></div>
+            <div><img src="../resources/blog/images/07.jpg"><h3>Camera</h3></div>
+            <div><img src="../resources/blog/images/25.jpg"><h3>Vintage camera</h3></div>
+            <div><img src="../resources/blog/images/09.jpg"><h3>Coffee</h3></div>
+            <div><img src="../resources/blog/images/10.jpg"><h3>Cookies</h3></div>
+            <div><img src="../resources/blog/images/11.jpg"><h3>Cubes</h3></div>
+            <div><img src="../resources/blog/images/12.jpg"><h3>DJ</h3></div>
+            <div><img src="../resources/blog/images/13.jpg"><h3>Doors</h3></div>
+            <div><img src="../resources/blog/images/14.jpg"><h3>Matchbox</h3></div>
+            <div><img src="../resources/blog/images/15.jpg"><h3>Freiburg</h3></div>
+            <div><img src="../resources/blog/images/16.jpg"><h3>Henna</h3></div>
+            <div><img src="../resources/blog/images/17.jpg"><h3>Home office</h3></div>
+            <div><img src="../resources/blog/images/18.jpg"><h3>iPad</h3></div>
+            <div><img src="../resources/blog/images/19.jpg"><h3>Keyboard</h3></div>
+            <div><img src="../resources/blog/images/20.jpg"><h3>Lynx</h3></div>
+            <div><img src="../resources/blog/images/21.jpg"><h3>Mac</h3></div>
+            <div><img src="../resources/blog/images/22.jpg"><h3>Notebook</h3></div>
+            <div><img src="../resources/blog/images/23.jpg"><h3>Thoughts</h3></div>
+            <div><img src="../resources/blog/images/24.jpg"><h3>Office</h3></div>
+            <div><img src="../resources/blog/images/25.jpg"><h3>Children</h3></div>
+            <div><img src="../resources/blog/images/26.jpg"><h3>Portrait</h3></div>
+            <div><img src="../resources/blog/images/27.jpg"><h3>Startup</h3></div>
+            <div><img src="../resources/blog/images/28.jpg"><h3>Sun</h3></div>
+            <div><img src="../resources/blog/images/29.jpg"><h3>The Eiffel Tower</h3></div>
+            <div><img src="../resources/blog/images/30.jpg"><h3>Water drops</h3></div>
 
         </div>
     </figure>
@@ -151,15 +144,15 @@
 
 
 <!--[if (gte IE 9)|!(IE)]><!-->
-<script src="../../../resources/blog/assets/js/jquery.min.js"></script>
+<script src="../resources/blog/assets/js/jquery.min.js"></script>
 <!--<![endif]-->
 <!--[if lte IE 8 ]>
 <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
 <script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
-<script src="../../../resources/blog/assets/js/amazeui.ie8polyfill.min.js"></script>
+<script src="../resources/blog/assets/js/amazeui.ie8polyfill.min.js"></script>
 <![endif]-->
-<script src="../../../resources/blog/assets/js/amazeui.min.js"></script>
-<script src="../../../resources/blog/assets/js/pinto.min.js"></script>
-<script src="../../../resources/blog/assets/js/img.js"></script>
+<script src="../resources/blog/assets/js/amazeui.min.js"></script>
+<script src="../resources/blog/assets/js/pinto.min.js"></script>
+<script src="../resources/blog/assets/js/img.js"></script>
 </body>
 </html>

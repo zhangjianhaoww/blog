@@ -1,5 +1,5 @@
 $(function () {
-    var url = "/admin/admininitinfo";
+    var url = "myblog/admin/admininitinfo";
     var articlePage = 1;
     var articleType = null;
     var pageCount = 1;

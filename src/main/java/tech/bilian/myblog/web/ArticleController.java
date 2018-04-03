@@ -145,7 +145,7 @@ public class ArticleController {
 
 
 
-    @RequestMapping(value = "article/articledetailsinfo", method = RequestMethod.GET)
+    @RequestMapping(value = "articledetailsinfo", method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> articleDetailsInfo(HttpServletRequest request){
         Map<String, Object> modelMap = new HashMap<>();

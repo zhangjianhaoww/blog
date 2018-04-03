@@ -22,17 +22,17 @@
     <!-- No Baidu Siteapp-->
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
 
-    <link rel="icon" type="image/png" href="../../../resources/blog/assets/i/favicon.png">
+    <link rel="icon" type="image/png" href="../resources/blog/assets/i/favicon.png">
 
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
-    <link rel="icon" sizes="192x192" href="../../../resources/blog/assets/i/app-icon72x72@2x.png">
+    <link rel="icon" sizes="192x192" href="../resources/blog/assets/i/app-icon72x72@2x.png">
 
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
-    <link rel="apple-touch-icon-precomposed" href="../../../resources/blog/assets/i/app-icon72x72@2x.png">
+    <link rel="apple-touch-icon-precomposed" href="../resources/blog/assets/i/app-icon72x72@2x.png">
 
     <!-- Tile icon for Win8 (144x144 + tile color) -->
     <meta name="msapplication-TileImage" content="assets/i/app-icon72x72@2x.png">
@@ -42,8 +42,8 @@
     <!--
     <link rel="canonical" href="http://www.example.com/">
     -->
-    <link rel="stylesheet" href="../../../resources/blog/assets/css/amazeui.min.css">
-    <link rel="stylesheet" href="../../../resources/blog/assets/css/app.css">
+    <link rel="stylesheet" href="../resources/blog/assets/css/amazeui.min.css">
+    <link rel="stylesheet" href="../resources/blog/assets/css/app.css">
 </head>
 <body>
 <header>
@@ -98,19 +98,19 @@
 
 
 <!--[if (gte IE 9)|!(IE)]><!-->
-<script src="../../../resources/blog/assets/js/jquery.min.js"></script>
+<script src="../resources/blog/assets/js/jquery.min.js"></script>
 <!--<![endif]-->
 <!--[if lte IE 8 ]>
 <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
 <script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
-<script src="../../../resources/blog/assets/js/amazeui.ie8polyfill.min.js"></script>
+<script src="../resources/blog/assets/js/amazeui.ie8polyfill.min.js"></script>
 <![endif]-->
-<script src="../../../resources/blog/assets/js/amazeui.min.js"></script>
-<script src="../../../resources/blog/assets/js/app.js"></script>
-<script src="../../../resources/js/common/commons.js"></script>
+<script src="../resources/blog/assets/js/amazeui.min.js"></script>
+<script src="../resources/blog/assets/js/app.js"></script>
+<script src="../resources/js/common/commons.js"></script>
 <script>
     $(function () {
-        url = '/admin/checkuser';
+        url = 'myblog/admin/checkuser';
 
         $("#submit").click(function () {
             var user= $("#userName").val();
@@ -121,7 +121,7 @@
                 return;
             }
 
-            $.post('/admin/checkuser',
+            $.post('myblog/admin/checkuser',
                 {
                     userName:user,
                     password:password,
