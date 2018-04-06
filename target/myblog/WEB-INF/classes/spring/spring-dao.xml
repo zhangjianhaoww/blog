@@ -14,12 +14,8 @@
     <context:property-placeholder location="classpath:jdbc.properties"/>
 
     <!-- 数据库链接池 -->
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <!-- 配置连接池属性 -->
-        <property name="driverClass" value="${jdbc_driver}"/>
-        <property name="jdbcUrl" value="${jdbc_url}"/>
-        <property name="user" value="${jdbc_username}"/>
-        <property name="password" value="${jdbc_password}"/>
+    <bean id="abstractDataSource" abstract="true" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+
 
         <!-- c3p0私有属性 -->
         <property name="maxPoolSize" value="100"/>
@@ -32,6 +28,39 @@
         <property name="acquireRetryAttempts" value="2"/>
     </bean>
 
+    <bean id="master" parent="abstractDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <!-- 配置连接池属性 -->
+        <property name="driverClass" value="${jdbc_driver}"/>
+        <property name="jdbcUrl" value="${jdbc_maser_url}"/>
+        <property name="user" value="${jdbc_username}"/>
+        <property name="password" value="${jdbc_password}"/>
+    </bean>
+
+    <bean id="slave" parent="abstractDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <!-- 配置连接池属性 -->
+        <property name="driverClass" value="${jdbc_driver}"/>
+        <property name="jdbcUrl" value="${jdbc_slave_url}"/>
+        <property name="user" value="${jdbc_username}"/>
+        <property name="password" value="${jdbc_password}"/>
+    </bean>
+
+    <!-- 配置动态数据源 -->
+    <bean id="dynamicDataSources" class="tech.bilian.myblog.dao.split.DynamicDataSource">
+        <property name="targetDataSources">
+            <map>
+                <entry value-ref="master" key="master"></entry>
+                <entry value-ref="slave" key="slave"></entry>
+            </map>
+        </property>
+        <property name="defaultTargetDataSource" ref="master">
+        </property>
+    </bean>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
+        <property name="targetDataSource">
+            <ref bean="dynamicDataSources"/>
+        </property>
+    </bean>
     <!--
     <bean id="dataSource" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
         <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
