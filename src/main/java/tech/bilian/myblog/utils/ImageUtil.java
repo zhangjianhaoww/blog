@@ -58,7 +58,7 @@ public class ImageUtil {
         File dest = new File(PathUtil.getImageBasePath() + relativeAddr);
         logger.debug("完整路径： " + dest);
         try{
-            Thumbnails.of(image.getImageInputStream()).size(200, 200).outputQuality(0.8).toFile(dest);
+            Thumbnails.of(image.getImageInputStream()).size(900, 900).outputQuality(0.8).toFile(dest);
 
         }catch (IOException e){
 

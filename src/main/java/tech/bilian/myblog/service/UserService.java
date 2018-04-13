@@ -1,5 +1,7 @@
 package tech.bilian.myblog.service;
 
+import tech.bilian.myblog.dao.split.DataSource;
+import tech.bilian.myblog.dto.Execution;
 import tech.bilian.myblog.dto.UserExecution;
 import tech.bilian.myblog.pojo.User;
 
@@ -11,7 +13,8 @@ public interface UserService {
      * @param user
      * @return
      */
-    UserExecution queryUser(User user);
+    @DataSource("slave")
+    Execution<User> queryUser(User user);
 
     /**
      * 根据用户id查找用户详细信息
@@ -19,6 +22,7 @@ public interface UserService {
      * @param id
      * @return
      */
-    UserExecution selectUserDetailsById(long id);
+    @DataSource("slave")
+    Execution<User> selectUserDetailsById(long id);
 
 }

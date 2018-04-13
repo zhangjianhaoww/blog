@@ -46,14 +46,14 @@
     <link rel="stylesheet" href="../resources/blog/assets/css/app.css">
 </head>
 <body>
-<header>
+<!--header>
     <div class="log-header">
         <h1><a href="/">Amaze UI</a> </h1>
     </div>
     <div class="log-re">
         <button type="button" class="am-btn am-btn-default am-radius log-button">注册</button>
     </div>
-</header>
+</header-->
 
 <div class="log">
     <div class="am-g">
@@ -72,13 +72,13 @@
                 </div>
                 <br>
 
-                <img id="captcha_img" alt="点击更换" title="点击更换" onclick="changeVerifyCode(this)" src="../../Kaptcha">
+                <img id="captcha_img" alt="点击更换" title="点击更换" onclick="changeVerifyCode(this)" src="../Kaptcha">
                 <div class="am-input-group am-radius am-animation-slide-left">
                     <input type="text" id="kaptcha" name="kaptcha" class="am-radius" data-validation-message="请输入验证码" placeholder="验证码" required/>
                     <span class="am-input-group-label log-icon am-radius"><i class="am-icon-user am-icon-sm am-icon-fw"></i></span>
                 </div>
                 <br>
-                <button type="submit" id="submit" class="am-btn am-btn-primary am-btn-block am-btn-lg am-radius am-animation-slide-bottom log-animation-delay">登 录</button>
+                <button type="button" id="submit" class="am-btn am-btn-primary am-btn-block am-btn-lg am-radius am-animation-slide-bottom log-animation-delay">登 录</button>
                 <!--    <p class="am-animation-slide-bottom log-animation-delay"><a href="#">忘记密码?</a></p>
                     <div class="am-btn-group  am-animation-slide-bottom log-animation-delay-b">
                         <p>使用第三方登录</p>
@@ -108,7 +108,8 @@
 <script src="../resources/blog/assets/js/amazeui.min.js"></script>
 <script src="../resources/blog/assets/js/app.js"></script>
 <script src="../resources/js/common/commons.js"></script>
-<script>
+<script src="../resources/js/login.js"></script>
+<!--script>
     $(function () {
         url = 'myblog/admin/checkuser';
 
@@ -160,6 +161,6 @@
         });
 
     })
-</script>
+</script-->
 </body>
 </html>

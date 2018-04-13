@@ -57,6 +57,7 @@ $(function () {
 
     var articleId = getQueryString("articleId");
     var url = "/myblog/article/articledetailsinfo?articleId=" + articleId;
+
     getArticleDetails();
 
     // $.ajax({
@@ -73,7 +74,8 @@ $(function () {
     function getArticleDetails() {
         $.getJSON(url, function (data) {
             if(data.success){
-                handleList(data.article)
+                handleList(data.article);
+                hadleArticleParentType(data.parentType);
             }
         })
     }
@@ -92,7 +94,7 @@ $(function () {
             +'</p>'
             +'</div>'
             +'<div class="am-article-bd">'
-            +'<img src="../resources/blog/assets/i/f10.jpg" alt="" class="blog-entry-img blog-article-margin">'
+            +'<img src="' + data.articleImage + '"alt="" class="blog-entry-img blog-article-margin">'
             //+'<p class="class="am-article-lead""> 描述：'
             // +'<blockquote><p>' + data.articleDesc + '</p></blockquote>'
             +'<div id="articleDetails">' + marked(data.articleText) + '</div>'
@@ -109,6 +111,18 @@ $(function () {
 
         $("#article_details").html(article_html);
 
+
+
+    }
+
+    function hadleArticleParentType(data) {
+
+        var parentTypeHtml = '<li><a href="/myblog/article/index">全部类型</a></li>';
+        data.map(function (item, index) {
+            parentTypeHtml += '<li><a href="/myblog/article/index?parentTypeId=' + item.articleTypeId +'">' + item.articleTypeName + '</a></li> '
+
+        });
+        $("#articleParentTypeaa").html(parentTypeHtml);
     }
 
 })

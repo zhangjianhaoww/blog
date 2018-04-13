@@ -53,24 +53,16 @@ public class AdminController {
     @Resource
     UserService userService;
 
-    @RequestMapping(value = "login", method = RequestMethod.GET)
-    public String logIn(){
-        return "admin/login";
-    }
 
-    @RequestMapping(value = "articleadd", method = RequestMethod.GET)
-    public String articleAdd(HttpServletRequest request, HttpServletResponse response){
-        if(request.getSession().getAttribute("userId") == null){
-            try {
-                response.sendRedirect("/admin/login");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return "admin/articleadd";
-    }
-
+    /**
+     * 文章添加
+     * 1:判断用户登录
+     * 2:判断验证码
+     * 3:获取文章信息和图片信息
+     * 4:调用ArticleService.insertArticle方法插入文章
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "articleinsert", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> articleInsert(HttpServletRequest request) {
@@ -280,6 +272,12 @@ public class AdminController {
 
     }
 
+    /**
+     * 获取插入文章页面初始化信息
+     * 主要是获取文章种类进行选择
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "getinsertpageinitinfo", method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getInsertPageInitInfo(HttpServletRequest request){
@@ -287,7 +285,7 @@ public class AdminController {
         ArticleType articleType = new ArticleType();
         ArticleType parent = new ArticleType();
         articleType.setParent(parent);
-        ArticleTypeExecution articleTypeExecution = articleTypeService.queryArticleType(articleType);
+        Execution<ArticleType> articleTypeExecution = articleTypeService.queryArticleType(articleType);
         if(articleTypeExecution.getState() == 0){
             modelMap.put("success", false);
             modelMap.put("errMsg", articleTypeExecution.getStateInfo());
@@ -299,11 +297,18 @@ public class AdminController {
             return modelMap;
         }
         modelMap.put("success", true);
-        modelMap.put("articleTypeList", articleTypeExecution.getArticleTypeList());
+        modelMap.put("articleTypeList", articleTypeExecution.getModels());
         return modelMap;
     }
 
 
+    /**
+     * 登录验证
+     * 验证成功则将用户名和用户id添加到session中
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping(value = "/checkuser", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> checkUser(HttpServletRequest request, HttpServletResponse response){
@@ -323,10 +328,10 @@ public class AdminController {
         }
         User user = new User();
         user.setUserName(userName);
-        UserExecution userExecution = userService.queryUser(user);
-        if(password.equals(userExecution.getUser().getUserPassword())){
+        Execution<User> userExecution = userService.queryUser(user);
+        if(password.equals(userExecution.getModel().getUserPassword())){
             request.getSession().setAttribute("user", userName);
-            request.getSession().setAttribute("userId", userExecution.getUser().getUserId());
+            request.getSession().setAttribute("userId", userExecution.getModel().getUserId());
             System.out.println("success login");
             modelMap.put("success", true);
 
@@ -340,20 +345,12 @@ public class AdminController {
     }
 
 
-
-    @RequestMapping(value = "adminindex", method = RequestMethod.GET)
-    public String adminIndex(HttpServletRequest request, HttpServletResponse response){
-        if(request.getSession().getAttribute("userId") == null){
-            try {
-                response.sendRedirect("/admin/login");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return "admin/adminindex";
-    }
-
-
+    /**
+     * 后台管理页面初始化信息
+     * 通过session中的用户id获取该用户的所用文章，通过service层的mysql的limit分页
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "admininitinfo", method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> adminInitInfo(HttpServletRequest request){
@@ -395,8 +392,8 @@ public class AdminController {
         List<Article> articles = execution.getModels();
         ArticleType articleType = new ArticleType();
         articleType.setParent(new ArticleType());
-        ArticleTypeExecution articleTypeExecution = articleTypeService.queryArticleType(articleType);
-        List<ArticleType> articleTypes = articleTypeExecution.getArticleTypeList();
+        Execution<ArticleType> articleTypeExecution = articleTypeService.queryArticleType(articleType);
+        List<ArticleType> articleTypes = articleTypeExecution.getModels();
 
         modelMap.put("articles", articles);
         modelMap.put("articleTypes", articleTypes);

@@ -3,6 +3,7 @@ package tech.bilian.myblog.service.serviceimpl;
 import org.springframework.stereotype.Service;
 import tech.bilian.myblog.dao.ArticleTypeDao;
 import tech.bilian.myblog.dto.ArticleTypeExecution;
+import tech.bilian.myblog.dto.Execution;
 import tech.bilian.myblog.pojo.ArticleType;
 import tech.bilian.myblog.service.ArticleTypeService;
 
@@ -22,14 +23,14 @@ public class ArticleTypeServiceImpl implements ArticleTypeService {
      * @return
      */
     @Override
-    public ArticleTypeExecution queryArticleType(ArticleType articleType) {
+    public Execution<ArticleType> queryArticleType(ArticleType articleType) {
         List<ArticleType> articleTypeList = articleTypeDao.queryArticleType(articleType);
         if(articleTypeList.size() < 0){
-            return new ArticleTypeExecution(-1, "操作数据库失败！！！");
+            return new Execution<ArticleType>(-1, "操作数据库失败！！！");
         }
         if(articleTypeList.size() == 0){
-            return new ArticleTypeExecution(0, "查询数据为空！！！");
+            return new Execution<ArticleType>(0, "查询数据为空！！！");
         }
-        return new ArticleTypeExecution(1, "操作成功！！！", articleTypeList.size(), articleTypeList);
+        return new Execution<ArticleType>(1, "操作成功！！！", articleTypeList);
     }
 }

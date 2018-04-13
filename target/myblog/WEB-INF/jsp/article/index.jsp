@@ -48,11 +48,11 @@
             <!--li><a href="lw-article-fullwidth.html">全宽页面</a></li>
             <li><a href="lw-timeline.html">存档</a></li-->
         </ul>
-        <form class="am-topbar-form am-topbar-right am-form-inline" role="search">
+        <!--form class="am-topbar-form am-topbar-right am-form-inline" role="search">
             <div class="am-form-group">
                 <input type="text" class="am-form-field am-input-sm" placeholder="搜索">
             </div>
-        </form>
+        </form-->
     </div>
 </nav>
 <hr>

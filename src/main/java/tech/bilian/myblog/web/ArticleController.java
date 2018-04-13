@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import tech.bilian.myblog.dto.*;
 import tech.bilian.myblog.pojo.Article;
 import tech.bilian.myblog.pojo.ArticleType;
+import tech.bilian.myblog.pojo.User;
 import tech.bilian.myblog.service.ArticleService;
 import tech.bilian.myblog.service.ArticleTypeService;
 import tech.bilian.myblog.service.UserService;
@@ -27,6 +28,16 @@ public class ArticleController {
     @Resource
     ArticleTypeService articleTypeService;
 
+    /**
+     * 文章index页的信息初始化，可通过分类查询
+     * 作者的基本信息
+     * 一级分类
+     * 二级分类（具体分类）
+     * 文章基本信息：id, 图片，desc, 作者， 二级分类
+     *
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "articleindexinfo", method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> articleIndexInfo(HttpServletRequest request){
@@ -52,7 +63,7 @@ public class ArticleController {
         }
 
         //查找用户基本信息
-        UserExecution userExecution = userService.selectUserDetailsById(1l);
+        Execution<User> userExecution = userService.selectUserDetailsById(1l);
         if(userExecution.getState()<1){
             modelMap.put("success", false);
             modelMap.put("errMsg", userExecution.getStateInfo());
@@ -60,7 +71,7 @@ public class ArticleController {
         }
 
         //查找一级目录
-        ArticleTypeExecution articleParentTypeExecution = articleTypeService.queryArticleType(null);
+        Execution<ArticleType> articleParentTypeExecution = articleTypeService.queryArticleType(null);
         if(articleParentTypeExecution.getState()<1){
             modelMap.put("success", false);
             modelMap.put("errMsg", articleParentTypeExecution.getStateInfo());
@@ -70,7 +81,7 @@ public class ArticleController {
         //查找二级目录
         ArticleType articleType = new ArticleType();
         articleType.setParent(new ArticleType());
-        ArticleTypeExecution articleTypeExecution = articleTypeService.queryArticleType(articleType);
+        Execution<ArticleType> articleTypeExecution = articleTypeService.queryArticleType(articleType);
         if(articleTypeExecution.getState()<1){
             modelMap.put("success", false);
             modelMap.put("errMsg", articleTypeExecution.getStateInfo());
@@ -92,9 +103,9 @@ public class ArticleController {
                 modelMap.put("errMsg", parentTypeExecution.getStatusInfo());
             }
             modelMap.put("success", true);
-            modelMap.put("secondType", articleTypeExecution.getArticleTypeList());
-            modelMap.put("firstType", articleParentTypeExecution.getArticleTypeList());
-            modelMap.put("user", userExecution.getUser());
+            modelMap.put("secondType", articleTypeExecution.getModels());
+            modelMap.put("firstType", articleParentTypeExecution.getModels());
+            modelMap.put("user", userExecution.getModel());
             modelMap.put("articleCount", parentTypeExecution.getCount());
             modelMap.put("articleList", parentTypeExecution.getArticleList());
             return modelMap;
@@ -118,30 +129,25 @@ public class ArticleController {
 
 
 
-        modelMap.put("secondType", articleTypeExecution.getArticleTypeList());
-        modelMap.put("firstType", articleParentTypeExecution.getArticleTypeList());
+        modelMap.put("secondType", articleTypeExecution.getModels());
+        modelMap.put("firstType", articleParentTypeExecution.getModels());
         modelMap.put("articleCount", articleCount);
         modelMap.put("success", true);
         modelMap.put("articleList", articleList.getModels());
-        modelMap.put("user", userExecution.getUser());
+        modelMap.put("user", userExecution.getModel());
 
         System.out.println("dlfkjsl;fjsflaskjfasldfjdasklfd");
         return modelMap;
     }
 
-    @RequestMapping(value = "index", method = RequestMethod.GET)
-    public String index(){
-        return "article/index";
-    }
 
-
-    @RequestMapping(value = "articledetails", method = RequestMethod.GET)
-    public String articleDetails(){
-        return "article/articledetails";
-    }
-
-
-
+    /**
+     * 文章详细信息
+     *
+     *
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "articledetailsinfo", method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> articleDetailsInfo(HttpServletRequest request){
@@ -161,6 +167,13 @@ public class ArticleController {
             modelMap.put("errMsg", articleExecution.getStateInfo());
             return modelMap;
         }
+
+        Execution<ArticleType> parentType = articleTypeService.queryArticleType(null);
+        if(parentType.getState()<0){
+            modelMap.put("success", false);
+            modelMap.put("errMsg", parentType.getStateInfo());
+            return modelMap;
+        }
 //        long articleSize = articleService.queryArticleCount(null);
 //        if(articleSize < 0){
 //            modelMap.put("success", false);
@@ -170,12 +183,10 @@ public class ArticleController {
 
         modelMap.put("success", true);
         modelMap.put("article", articleExecution.getModel());
+        modelMap.put("parentType", parentType.getModels());
         //modelMap.put("articleSize", articleSize);
         return modelMap;
     }
 
-    @RequestMapping(value = "/img", method = RequestMethod.GET)
-    public String img(){
-        return "/article/img";
-    }
+
 }

@@ -1,6 +1,7 @@
 package tech.bilian.myblog.service;
 
 import org.springframework.stereotype.Service;
+import tech.bilian.myblog.dao.split.DataSource;
 import tech.bilian.myblog.dto.ArticleExecution;
 import tech.bilian.myblog.dto.Execution;
 import tech.bilian.myblog.dto.ParentTypeExecution;
@@ -18,12 +19,13 @@ public interface ArticleService {
      * @param article
      * @return
      */
+    @DataSource("master")
     Execution<Article> insertArticle(Article article, Image image, Long userId);
 
-
+    @DataSource("slave")
     Execution<Article> queryArticleList(Article article, int rowIndex, int pageSize);
 
-
+    @DataSource("slave")
     int queryArticleCount(Article article);
 
     /**
@@ -34,6 +36,7 @@ public interface ArticleService {
      * @param pageSize
      * @return
      */
+    @DataSource("slave")
     Execution<Article> getArticleInitInfo(Article article, int rowIndex, int pageSize);
 
 
@@ -46,6 +49,7 @@ public interface ArticleService {
      * @param pageSize
      * @return
      */
+    @DataSource("slave")
     ParentTypeExecution getArticleIndexInfoByParentType(Article article, int rowIndex, int pageSize);
 
     /**
@@ -54,5 +58,6 @@ public interface ArticleService {
      * @param id
      * @return
      */
+    @DataSource("slave")
     Execution<Article> getArticleById(long id);
 }

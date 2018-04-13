@@ -13,7 +13,11 @@ import java.lang.reflect.Method;
 @Component
 public class DataSourceAspect {
 
-
+    /**
+     * 通过判断方法Datasource注解来判断主从选择
+     * @param joinPoint
+     * @throws Exception
+     */
     @Before("execution(* tech.bilian.myblog.service.serviceimpl.*.*(..))")
     public void before(JoinPoint joinPoint) throws Exception{
         String methodName = joinPoint.getSignature().getName();

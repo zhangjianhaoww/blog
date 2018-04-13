@@ -7,6 +7,10 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import tech.bilian.myblog.pojo.Article;
 
+/**
+ * 使用redis进行缓存
+ * 使用protostuff进行序列化
+ */
 public class RedisDao {
     private final JedisPool jedisPool;
 
